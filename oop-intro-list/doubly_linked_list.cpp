@@ -8,67 +8,71 @@
 #include <iostream>
 using namespace std;
 
-struct Node {
-	int dat;
-	Node *next;
-	Node *prev;
+struct ListNode {
+	int data;
+	ListNode *next;
+	ListNode *prev;
 };
 //-------------------------
-Node *first(int);
-void add(Node **, int);
-Node *find(Node * const, int);
-bool remove(Node **, Node **, int);
-Node *insert(Node * const, Node **, int, int);
-void lprint(Node *);
-void ldel(Node *);
+ListNode *first(int);
+void add(ListNode **, int);
+ListNode *find(ListNode * const, int);
+bool remove(ListNode **, ListNode **, int);
+ListNode *insert(ListNode * const, ListNode **, int, int);
+void list_print(ListNode *);
+void list_delete(ListNode *);
 //-------------------------
 int main() {
 	int nn, k, m;
 	//визначаємось з кількістю елементів
 	cout << "Number = ";
-	cin >> nn;
-	cout << endl;
-	Node *pbeg = first(1); //формування першого елемента списку
-	Node *pend = pbeg;     //список складаєтьсчя з одного елемента
-	Node *p;
+	//cin >> nn;
+	nn = 7;
+	cout << nn << endl;
+	ListNode *pbeg = first(1); //формування першого елемента списку
+	ListNode *pend = pbeg;     //список складаєтьсчя з одного елемента
+	ListNode *p;
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
 		add(&pend, i);
-	lprint(pbeg);  //виведення списку
+	list_print(pbeg);  //виведення списку
 	//вставка елемента k після елемента m
 	cout << "Insert = ";
-	cin >> k;
-	cout << endl;
+	//cin >> k;
+	k = 42;
+	cout << k << endl;
 	cout << "After = ";
-	cin >> m;
-	cout << endl;
+	//cin >> m;
+	m = 4;
+	cout << m << endl;
 	p = insert(pbeg, &pend, m, k);
-	lprint(pbeg);  //виведення списку
+	list_print(pbeg);  //виведення списку
 	//вилучення елемента k
 	cout << "Delete = ";
-	cin >> k;
-	cout << endl;
+	//cin >> k;
+	k = 5;
+	cout << k << endl;
 	if (!remove(&pbeg, &pend, k))
 		cout << "no find " << endl;
-	lprint(pbeg);  //виведення списку
-	ldel(pbeg);  //знищення списку
-	system("pause");
+	list_print(pbeg);  //виведення списку
+	list_delete(pbeg);  //знищення списку
+	//system("pause");
 	return 0;
 }
 //--------------------------------------------------------
 //формування першого елемента списку
-Node *first(int d) {
-	Node *pv = new Node;
-	pv->dat = d;
+ListNode *first(int d) {
+	ListNode *pv = new ListNode;
+	pv->data = d;
 	pv->next = NULL;
 	pv->prev = NULL;
 	return pv;
 }
 //--------------------------------------------------------
 //додавання елементів в кінець списку 2, 3, ..., nn
-void add(Node **pend, int d) {
-	Node *pv = new Node;
-	pv->dat = d;
+void add(ListNode **pend, int d) {
+	ListNode *pv = new ListNode;
+	pv->data = d;
 	pv->next = NULL;
 	pv->prev = *pend;
 	(*pend)->next = pv;
@@ -76,10 +80,10 @@ void add(Node **pend, int d) {
 }
 //--------------------------------------------------------
 //пошук елемента за ключем
-Node *find(Node * const pbeg, int d) {
-	Node *pv = pbeg;
+ListNode *find(ListNode * const pbeg, int d) {
+	ListNode *pv = pbeg;
 	while (pv) {
-		if (pv->dat == d)
+		if (pv->data == d)
 			break;
 		pv = pv->next;
 	}
@@ -87,8 +91,8 @@ Node *find(Node * const pbeg, int d) {
 }
 //-------------------------------------------------------
 //вилучення елемента
-bool remove(Node **pbeg, Node **pend, int key) {
-	if (Node *pkey = find(*pbeg, key)) {
+bool remove(ListNode **pbeg, ListNode **pend, int key) {
+	if (ListNode *pkey = find(*pbeg, key)) {
 		if (pkey == *pbeg) {
 			*pbeg = (*pbeg)->next;
 			(*pbeg)->prev = NULL;
@@ -106,10 +110,10 @@ bool remove(Node **pbeg, Node **pend, int key) {
 }
 //-------------------------------------------------------
 //вставка елемента
-Node *insert(Node * const pbeg, Node **pend, int key, int d) {
-	if (Node *pkey = find(pbeg, key)) {
-		Node *pv = new Node;
-		pv->dat = d;
+ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
+	if (ListNode *pkey = find(pbeg, key)) {
+		ListNode *pv = new ListNode;
+		pv->data = d;
 		pv->next = pkey->next; //зв`язок нового вузла з наступним
 		pv->prev = pkey;  //зв`язок нового вузла з попереднім
 		pkey->next = pv;  //зв`язок попереднього з новим вузлом
@@ -127,18 +131,18 @@ Node *insert(Node * const pbeg, Node **pend, int key, int d) {
 }
 //-------------------------------------------------------
 //виведення списку
-void lprint(Node *pbeg) {
-	Node *pv = pbeg;
+void list_print(ListNode *pbeg) {
+	ListNode *pv = pbeg;
 	while (pv) {
-		cout << pv->dat << ' ';
+		cout << pv->data << ' ';
 		pv = pv->next;
 	}
 	cout << endl;
 }
 //-------------------------------------------------------
 //знищення списку
-void ldel(Node *pbeg) {
-	Node *pv;
+void list_delete(ListNode *pbeg) {
+	ListNode *pv;
 	while (pbeg) {
 		pv = pbeg;
 		pbeg = pbeg->next;
