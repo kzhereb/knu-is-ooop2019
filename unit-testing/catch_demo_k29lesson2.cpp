@@ -5,10 +5,10 @@
  *      Author: KZ
  */
 
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-
+//#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
+#define CATCH_CONFIG_DISABLE // Disables assertions and test case registration
 #include "catch.hpp"
-
+namespace k29lesson2 {
 unsigned int Factorial( unsigned int number ) {
     return number <= 1 ? number : Factorial(number-1)*number;
 }
@@ -30,7 +30,7 @@ TEST_CASE( "Factorials are computed again", "[factorial]" ) {
     REQUIRE( Factorial(10) == 3628800 );
 }
 
-
+}
 ////#include<iostream>
 //int main(int argc, char* argv[]) {
 //	//int result = Catch::Session().run( argc, argv );
