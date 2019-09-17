@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <vector>
 using std::cout;
 using std::endl;
 
@@ -126,6 +127,7 @@ public:
 };
 
 void test_doubles() {
+	cout<<"Doubles"<<endl;
 	double nn, k, m;
 	//визначаємось з кількістю елементів
 	cout << "Number = ";
@@ -157,10 +159,59 @@ void test_doubles() {
 		cout << "no find " << endl;
 	my_list.print();  //виведення списку
 }
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+	os<<"[";
+	char sep = ' ';
+	for(const T& obj : vec) {
+		os<<sep<<obj;
+		sep = ',';
+	}
+	os<<" ]";
+	return os;
+}
+
+void test_int_vectors() {
+	cout<<"Int vectors"<<endl;
+	using std::vector;
+	int nn;
+	vector<int> k, m;
+	//визначаємось з кількістю елементів
+	cout << "Number = ";
+	//cin >> nn;
+	nn = 7;
+	cout << nn << endl;
+	DoublyLinkedList<vector<int>> my_list { { 1,4,5} };
+
+	for (int i = 2; i <= nn; i++)
+		my_list.add({i,4,5});
+	my_list.print();
+
+//	//вставка елемента k після елемента m
+//	cout << "Insert = ";
+//	//cin >> k;
+//	k = 4.2;
+//	cout << k << endl;
+//	cout << "After = ";
+//	//cin >> m;
+//	m = 2.1;
+//	cout << m << endl;
+//	my_list.insert(m, k);
+//	my_list.print();  //виведення списку
+//	//вилучення елемента k
+//	cout << "Delete = ";
+//	//cin >> k;
+//	k = 5.1;
+//	cout << k << endl;
+//	if (!my_list.remove(k))
+//		cout << "no find " << endl;
+//	my_list.print();  //виведення списку
+}
 
 //-------------------------
 int main() {
 	test_doubles();
+	test_int_vectors();
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
