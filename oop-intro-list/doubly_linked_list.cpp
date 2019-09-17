@@ -56,10 +56,10 @@ ListNode *find(ListNode * const, int);
 
 
 class DoublyLinkedList {
-public:
+private:
 	ListNode* begin;
 	ListNode* end;
-
+public:
 	DoublyLinkedList(int first_data) {
 		begin = new ListNode(first_data);//формування першого елемента списку
 		end = begin;//список складаєтьсчя з одного елемента
