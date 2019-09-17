@@ -9,21 +9,23 @@
 using std::cout;
 using std::endl;
 
+template<typename T>
 class ListNode {
 public:
-	int data;
-	ListNode *next;
-	ListNode *prev;
+	T data;
+	ListNode<T> *next;
+	ListNode<T> *prev;
 
 	//--------------------------------------------------------
 	//формування першого елемента списку
-	ListNode (int data) {
+	ListNode(T data) {
+		//TODO: pass by const ref
 		this->data = data;
 		next = nullptr;
 		prev = nullptr;
 	}
 
-	ListNode (int data, ListNode* prev, ListNode* next) {
+	ListNode(T data, ListNode<T>* prev, ListNode<T>* next) {
 		this->data = data;
 		this->next = next;
 		this->prev = prev;
@@ -49,20 +51,19 @@ public:
 		cout << endl;
 	}
 
-
 };
+template<typename T>
+ListNode<T> *find(ListNode<T> * const, T);
 
-ListNode *find(ListNode * const, int);
-
-
+template<typename T>
 class DoublyLinkedList {
 private:
-	ListNode* begin;
-	ListNode* end;
+	ListNode<T>* begin;
+	ListNode<T>* end;
 public:
-	DoublyLinkedList(int first_data) {
-		begin = new ListNode(first_data);//формування першого елемента списку
-		end = begin;//список складаєтьсчя з одного елемента
+	DoublyLinkedList(T first_data) {
+		begin = new ListNode<T>(first_data);//формування першого елемента списку
+		end = begin;	//список складаєтьсчя з одного елемента
 
 	}
 
@@ -72,8 +73,8 @@ public:
 
 	//--------------------------------------------------------
 	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(int data) {
-		ListNode *pv = new ListNode(data,end,nullptr);
+	void add(T data) {
+		ListNode<T> *pv = new ListNode<T>(data, end, nullptr);
 
 		end->next = pv;
 		end = pv;
@@ -81,19 +82,19 @@ public:
 
 	//-------------------------------------------------------
 	//вставка елемента
-	ListNode *insert(int key, int data) {
-		if (ListNode *pkey = find(begin, key)) {
+	ListNode<T> *insert(T key, T data) {
+		if (ListNode<T> *pkey = find(begin, key)) {
 
 			//зв`язок нового вузла з наступним
 			//зв`язок нового вузла з попереднім
-			ListNode *pv = new ListNode(data,pkey, pkey->next);
+			ListNode<T> *pv = new ListNode<T>(data, pkey, pkey->next);
 
 			pkey->next = pv;  //зв`язок попереднього з новим вузлом
 			//зв`язок наступного з новим вузлом
 			if (pkey != end)
 				(pv->next)->prev = pv;
 			else
-				end = pv;  //якщо вузол стає останнім, змінюємо покажчик на кінець
+				end = pv; //якщо вузол стає останнім, змінюємо покажчик на кінець
 			return pv;
 		}
 		return nullptr;  //місце для вставки не було знайдено
@@ -104,13 +105,13 @@ public:
 
 	//-------------------------------------------------------
 	//вилучення елемента
-	bool remove(int key) {
-		if (ListNode *pkey = find(begin, key)) {
+	bool remove(T key) {
+		if (ListNode<T> *pkey = find(begin, key)) {
 			if (pkey == begin) {
 				begin = begin->next;
 				begin->prev = nullptr;
 			} else if (pkey == end) {
-				end= end->prev;
+				end = end->prev;
 				end->next = nullptr;
 			} else {
 				(pkey->prev)->next = pkey->next;
@@ -124,17 +125,50 @@ public:
 	}
 };
 
+void test_doubles() {
+	double nn, k, m;
+	//визначаємось з кількістю елементів
+	cout << "Number = ";
+	//cin >> nn;
+	nn = 7;
+	cout << nn << endl;
+	DoublyLinkedList<double> my_list { 0.1 };
+
+	for (double i = 1.1; i <= nn; i++)
+		my_list.add(i);
+	my_list.print();
+	//вставка елемента k після елемента m
+	cout << "Insert = ";
+	//cin >> k;
+	k = 4.2;
+	cout << k << endl;
+	cout << "After = ";
+	//cin >> m;
+	m = 2.1;
+	cout << m << endl;
+	my_list.insert(m, k);
+	my_list.print();  //виведення списку
+	//вилучення елемента k
+	cout << "Delete = ";
+	//cin >> k;
+	k = 5.1;
+	cout << k << endl;
+	if (!my_list.remove(k))
+		cout << "no find " << endl;
+	my_list.print();  //виведення списку
+}
 
 //-------------------------
 int main() {
+	test_doubles();
+
 	int nn, k, m;
 	//визначаємось з кількістю елементів
 	cout << "Number = ";
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList my_list{1};
-
+	DoublyLinkedList<int> my_list { 1 };
 
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
@@ -156,7 +190,7 @@ int main() {
 	//cin >> k;
 	k = 5;
 	cout << k << endl;
-	if ( !my_list.remove(k) )
+	if (!my_list.remove(k))
 		cout << "no find " << endl;
 	my_list.print();  //виведення списку
 //
@@ -165,11 +199,11 @@ int main() {
 	return 0;
 }
 
-
 //--------------------------------------------------------
 //пошук елемента за ключем
-ListNode *find(ListNode * const pbeg, int d) {
-	ListNode *pv = pbeg;
+template<typename T>
+ListNode<T> *find(ListNode<T> * const pbeg, T d) {
+	ListNode<T> *pv = pbeg;
 	while (pv) {
 		if (pv->data == d)
 			break;
@@ -177,8 +211,4 @@ ListNode *find(ListNode * const pbeg, int d) {
 	}
 	return pv;
 }
-
-
-
-
 
