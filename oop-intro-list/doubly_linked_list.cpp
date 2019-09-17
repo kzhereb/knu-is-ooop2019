@@ -25,6 +25,14 @@ public:
 
 	}
 
+	ListNode(int data, ListNode* prev, ListNode* next) {
+
+		this->data = data;
+		this->next = next;
+		this->prev = prev;
+
+	}
+
 	//-------------------------------------------------------
 	//виведення списку
 	void list_print() {
@@ -85,10 +93,9 @@ int main() {
 //--------------------------------------------------------
 //додавання елементів в кінець списку 2, 3, ..., nn
 void add(ListNode **pend, int data) {
-	ListNode *pv = new ListNode(data);
+	ListNode *pv = new ListNode(data,*pend, nullptr);
 
-	pv->next = nullptr;
-	pv->prev = *pend;
+
 	(*pend)->next = pv;
 	*pend = pv;
 }
@@ -126,9 +133,8 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 //вставка елемента
 ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int data) {
 	if (ListNode *pkey = find(pbeg, key)) {
-		ListNode *pv = new ListNode(data);
-		pv->next = pkey->next; //зв`язок нового вузла з наступним
-		pv->prev = pkey;  //зв`язок нового вузла з попереднім
+		ListNode *pv = new ListNode(data, pkey, pkey->next);
+
 		pkey->next = pv;  //зв`язок попереднього з новим вузлом
 		//зв`язок наступного з новим вузлом
 		if (pkey != *pend)
