@@ -64,8 +64,8 @@ int main() {
 ListNode *first(int d) {
 	ListNode *pv = new ListNode;
 	pv->data = d;
-	pv->next = NULL;
-	pv->prev = NULL;
+	pv->next = nullptr;
+	pv->prev = nullptr;
 	return pv;
 }
 //--------------------------------------------------------
@@ -73,7 +73,7 @@ ListNode *first(int d) {
 void add(ListNode **pend, int d) {
 	ListNode *pv = new ListNode;
 	pv->data = d;
-	pv->next = NULL;
+	pv->next = nullptr;
 	pv->prev = *pend;
 	(*pend)->next = pv;
 	*pend = pv;
@@ -95,10 +95,10 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 	if (ListNode *pkey = find(*pbeg, key)) {
 		if (pkey == *pbeg) {
 			*pbeg = (*pbeg)->next;
-			(*pbeg)->prev = NULL;
+			(*pbeg)->prev = nullptr;
 		} else if (pkey == *pend) {
 			*pend = (*pend)->prev;
-			(*pend)->next = NULL;
+			(*pend)->next = nullptr;
 		} else {
 			(pkey->prev)->next = pkey->next;
 			(pkey->next)->prev = pkey->prev;
@@ -124,7 +124,7 @@ ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
 			*pend = pv;  //якщо вузол стає останнім, змінюємо покажчик на кінець
 		return pv;
 	}
-	return NULL;  //місце для вставки не було знайдено
+	return nullptr;  //місце для вставки не було знайдено
 				  //можна було б реалізовувати іншу обробку
 				  //наприклад, вставку в кінець списку,
 				  //передбачивши можливу порожність списку
