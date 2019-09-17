@@ -52,9 +52,25 @@ public:
 		cout << endl;
 	}
 };
+
+
+class DoublyLinkedList {
+public:
+	int length;
+	ListNode* begin;
+	ListNode* end;
+	//--------------------------------------------------------
+	//додавання елементів в кінець списку 2, 3, ..., nn
+	void add( int data) {
+		ListNode *pv = new ListNode(data,end, nullptr);
+
+		end->next = pv;
+		end = pv;
+	}
+
+};
 //-------------------------
 
-void add(ListNode **, int);
 ListNode *find(ListNode * const, int);
 bool remove(ListNode **, ListNode **, int);
 ListNode *insert(ListNode * const, ListNode **, int, int);
@@ -67,46 +83,39 @@ int main() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	ListNode *pbeg = new ListNode(1); //формування першого елемента списку
-	ListNode *pend = pbeg;     //список складаєтьсчя з одного елемента
-	ListNode *p;
+	DoublyLinkedList list;
+	list.begin = new ListNode(1); //формування першого елемента списку
+	list.end = list.begin;     //список складаєтьсчя з одного елемента
+
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
-		add(&pend, i);
-	pbeg->list_print();  //виведення списку
-	//вставка елемента k після елемента m
-	cout << "Insert = ";
-	//cin >> k;
-	k = 42;
-	cout << k << endl;
-	cout << "After = ";
-	//cin >> m;
-	m = 4;
-	cout << m << endl;
-	p = insert(pbeg, &pend, m, k);
-	pbeg->list_print();  //виведення списку
-	//вилучення елемента k
-	cout << "Delete = ";
-	//cin >> k;
-	k = 5;
-	cout << k << endl;
-	if (!remove(&pbeg, &pend, k))
-		cout << "no find " << endl;
-	pbeg->list_print();  //виведення списку
-	delete pbeg;  //знищення списку
+		list.add( i);
+	list.begin->list_print();  //виведення списку
+//	//вставка елемента k після елемента m
+//	cout << "Insert = ";
+//	//cin >> k;
+//	k = 42;
+//	cout << k << endl;
+//	cout << "After = ";
+//	//cin >> m;
+//	m = 4;
+//	cout << m << endl;
+//	p = insert(pbeg, &pend, m, k);
+//	pbeg->list_print();  //виведення списку
+//	//вилучення елемента k
+//	cout << "Delete = ";
+//	//cin >> k;
+//	k = 5;
+//	cout << k << endl;
+//	if (!remove(&pbeg, &pend, k))
+//		cout << "no find " << endl;
+//	pbeg->list_print();  //виведення списку
+//	delete pbeg;  //знищення списку
 	//system("pause");
 	return 0;
 }
 
-//--------------------------------------------------------
-//додавання елементів в кінець списку 2, 3, ..., nn
-void add(ListNode **pend, int data) {
-	ListNode *pv = new ListNode(data,*pend, nullptr);
 
-
-	(*pend)->next = pv;
-	*pend = pv;
-}
 //--------------------------------------------------------
 //пошук елемента за ключем
 ListNode *find(ListNode * const pbeg, int d) {
