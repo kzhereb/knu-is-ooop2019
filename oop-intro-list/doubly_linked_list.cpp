@@ -14,6 +14,17 @@ public:
 	int data;
 	ListNode *next;
 	ListNode *prev;
+
+	//--------------------------------------------------------
+	//формування першого елемента списку
+	ListNode(int data) {
+
+		this->data = data;
+		next = nullptr;
+		prev = nullptr;
+
+	}
+
 	//-------------------------------------------------------
 	//виведення списку
 	void list_print() {
@@ -26,7 +37,7 @@ public:
 	}
 };
 //-------------------------
-ListNode *first(int);
+
 void add(ListNode **, int);
 ListNode *find(ListNode * const, int);
 bool remove(ListNode **, ListNode **, int);
@@ -40,7 +51,7 @@ int main() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	ListNode *pbeg = first(1); //формування першого елемента списку
+	ListNode *pbeg = new ListNode(1); //формування першого елемента списку
 	ListNode *pend = pbeg;     //список складаєтьсчя з одного елемента
 	ListNode *p;
 	//додавання елементів в кінець списку 2, 3, ..., nn
@@ -70,20 +81,12 @@ int main() {
 	//system("pause");
 	return 0;
 }
-//--------------------------------------------------------
-//формування першого елемента списку
-ListNode *first(int d) {
-	ListNode *pv = new ListNode;
-	pv->data = d;
-	pv->next = nullptr;
-	pv->prev = nullptr;
-	return pv;
-}
+
 //--------------------------------------------------------
 //додавання елементів в кінець списку 2, 3, ..., nn
-void add(ListNode **pend, int d) {
-	ListNode *pv = new ListNode;
-	pv->data = d;
+void add(ListNode **pend, int data) {
+	ListNode *pv = new ListNode(data);
+
 	pv->next = nullptr;
 	pv->prev = *pend;
 	(*pend)->next = pv;
@@ -121,10 +124,9 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 }
 //-------------------------------------------------------
 //вставка елемента
-ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
+ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int data) {
 	if (ListNode *pkey = find(pbeg, key)) {
-		ListNode *pv = new ListNode;
-		pv->data = d;
+		ListNode *pv = new ListNode(data);
 		pv->next = pkey->next; //зв`язок нового вузла з наступним
 		pv->prev = pkey;  //зв`язок нового вузла з попереднім
 		pkey->next = pv;  //зв`язок попереднього з новим вузлом
