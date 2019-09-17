@@ -101,13 +101,29 @@ public:
 						 //наприклад, вставку в кінець списку,
 						 //передбачивши можливу порожність списку
 	}
+
+	//-------------------------------------------------------
+	//вилучення елемента
+	bool remove(int key) {
+		if (ListNode *pkey = find(begin, key)) {
+			if (pkey == begin) {
+				begin = begin->next;
+				begin->prev = nullptr;
+			} else if (pkey == end) {
+				end= end->prev;
+				end->next = nullptr;
+			} else {
+				(pkey->prev)->next = pkey->next;
+				(pkey->next)->prev = pkey->prev;
+			}
+			pkey->next = nullptr; // HACK: so that entire list is not deleted
+			delete pkey;
+			return true;
+		}
+		return false;
+	}
 };
 
-//-------------------------
-
-
-
-bool remove(ListNode **, ListNode **, int);
 
 //-------------------------
 int main() {
@@ -135,14 +151,14 @@ int main() {
 	cout << m << endl;
 	my_list.insert(m, k);
 	my_list.print();  //виведення списку
-//	//вилучення елемента k
-//	cout << "Delete = ";
-//	//cin >> k;
-//	k = 5;
-//	cout << k << endl;
-//	if (!remove(&pbeg, &pend, k))
-//		cout << "no find " << endl;
-//	pbeg->list_print();  //виведення списку
+	//вилучення елемента k
+	cout << "Delete = ";
+	//cin >> k;
+	k = 5;
+	cout << k << endl;
+	if ( !my_list.remove(k) )
+		cout << "no find " << endl;
+	my_list.print();  //виведення списку
 //
 //	delete pbeg;  //знищення списку
 	//system("pause");
@@ -161,26 +177,7 @@ ListNode *find(ListNode * const pbeg, int d) {
 	}
 	return pv;
 }
-//-------------------------------------------------------
-//вилучення елемента
-bool remove(ListNode **pbeg, ListNode **pend, int key) {
-	if (ListNode *pkey = find(*pbeg, key)) {
-		if (pkey == *pbeg) {
-			*pbeg = (*pbeg)->next;
-			(*pbeg)->prev = nullptr;
-		} else if (pkey == *pend) {
-			*pend = (*pend)->prev;
-			(*pend)->next = nullptr;
-		} else {
-			(pkey->prev)->next = pkey->next;
-			(pkey->next)->prev = pkey->prev;
-		}
-		pkey->next = nullptr; // HACK: so that entire list is not deleted
-		delete pkey;
-		return true;
-	}
-	return false;
-}
+
 
 
 
