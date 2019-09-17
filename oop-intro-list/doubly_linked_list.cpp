@@ -14,14 +14,35 @@ public:
 	int data;
 	ListNode *next;
 	ListNode *prev;
+
+	//--------------------------------------------------------
+	//формування першого елемента списку
+	ListNode (int data) {
+		this->data = data;
+		next = nullptr;
+		prev = nullptr;
+	}
+
+	//-------------------------------------------------------
+	//виведення списку
+	void list_print() {
+		ListNode *pv = this;
+		while (pv) {
+			cout << pv->data << ' ';
+			pv = pv->next;
+		}
+		cout << endl;
+	}
+
+
 };
 //-------------------------
-ListNode *first(int);
+
 void add(ListNode **, int);
 ListNode *find(ListNode * const, int);
 bool remove(ListNode **, ListNode **, int);
 ListNode *insert(ListNode * const, ListNode **, int, int);
-void list_print(ListNode *);
+
 void list_delete(ListNode *);
 //-------------------------
 int main() {
@@ -31,13 +52,13 @@ int main() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	ListNode *pbeg = first(1); //формування першого елемента списку
+	ListNode *pbeg = new ListNode(1); //формування першого елемента списку
 	ListNode *pend = pbeg;     //список складаєтьсчя з одного елемента
 	ListNode *p;
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
 		add(&pend, i);
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	//вставка елемента k після елемента m
 	cout << "Insert = ";
 	//cin >> k;
@@ -48,7 +69,7 @@ int main() {
 	m = 4;
 	cout << m << endl;
 	p = insert(pbeg, &pend, m, k);
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	//вилучення елемента k
 	cout << "Delete = ";
 	//cin >> k;
@@ -56,25 +77,16 @@ int main() {
 	cout << k << endl;
 	if (!remove(&pbeg, &pend, k))
 		cout << "no find " << endl;
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	list_delete(pbeg);  //знищення списку
 	//system("pause");
 	return 0;
 }
-//--------------------------------------------------------
-//формування першого елемента списку
-ListNode *first(int d) {
-	ListNode *pv = new ListNode;
-	pv->data = d;
-	pv->next = nullptr;
-	pv->prev = nullptr;
-	return pv;
-}
+
 //--------------------------------------------------------
 //додавання елементів в кінець списку 2, 3, ..., nn
-void add(ListNode **pend, int d) {
-	ListNode *pv = new ListNode;
-	pv->data = d;
+void add(ListNode **pend, int data) {
+	ListNode *pv = new ListNode(data);
 	pv->next = nullptr;
 	pv->prev = *pend;
 	(*pend)->next = pv;
@@ -112,10 +124,9 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 }
 //-------------------------------------------------------
 //вставка елемента
-ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
+ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int data) {
 	if (ListNode *pkey = find(pbeg, key)) {
-		ListNode *pv = new ListNode;
-		pv->data = d;
+		ListNode *pv = new ListNode(data);
 		pv->next = pkey->next; //зв`язок нового вузла з наступним
 		pv->prev = pkey;  //зв`язок нового вузла з попереднім
 		pkey->next = pv;  //зв`язок попереднього з новим вузлом
@@ -131,16 +142,7 @@ ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
 					 //наприклад, вставку в кінець списку,
 					 //передбачивши можливу порожність списку
 }
-//-------------------------------------------------------
-//виведення списку
-void list_print(ListNode *pbeg) {
-	ListNode *pv = pbeg;
-	while (pv) {
-		cout << pv->data << ' ';
-		pv = pv->next;
-	}
-	cout << endl;
-}
+
 //-------------------------------------------------------
 //знищення списку
 void list_delete(ListNode *pbeg) {
