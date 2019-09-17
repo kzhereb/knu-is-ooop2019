@@ -9,7 +9,8 @@
 using std::cout;
 using std::endl;
 
-struct ListNode {
+class ListNode {
+public:
 	int data;
 	ListNode *next;
 	ListNode *prev;
