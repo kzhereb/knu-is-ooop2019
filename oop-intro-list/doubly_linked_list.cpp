@@ -34,6 +34,14 @@ public:
 	}
 
 	//-------------------------------------------------------
+	//знищення списку
+	~ListNode() {
+		if (this->next) {
+			delete this->next; //HACK: recursive destructor call
+		}
+	}
+
+	//-------------------------------------------------------
 	//виведення списку
 	void list_print() {
 		ListNode *current = this;
@@ -50,7 +58,7 @@ void add(ListNode **, int);
 ListNode *find(ListNode * const, int);
 bool remove(ListNode **, ListNode **, int);
 ListNode *insert(ListNode * const, ListNode **, int, int);
-void list_delete(ListNode *);
+
 //-------------------------
 int main() {
 	int nn, k, m;
@@ -85,7 +93,7 @@ int main() {
 	if (!remove(&pbeg, &pend, k))
 		cout << "no find " << endl;
 	pbeg->list_print();  //виведення списку
-	list_delete(pbeg);  //знищення списку
+	delete pbeg;  //знищення списку
 	//system("pause");
 	return 0;
 }
@@ -124,6 +132,7 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 			(pkey->prev)->next = pkey->next;
 			(pkey->next)->prev = pkey->prev;
 		}
+		pkey->next = nullptr;
 		delete pkey;
 		return true;
 	}
@@ -149,14 +158,5 @@ ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int data) {
 				  //передбачивши можливу порожність списку
 }
 
-//-------------------------------------------------------
-//знищення списку
-void list_delete(ListNode *pbeg) {
-	ListNode *pv;
-	while (pbeg) {
-		pv = pbeg;
-		pbeg = pbeg->next;
-		delete pv;
-	}
-}
+
 
