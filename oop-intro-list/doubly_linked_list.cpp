@@ -14,6 +14,16 @@ public:
 	int data;
 	ListNode *next;
 	ListNode *prev;
+	//-------------------------------------------------------
+	//виведення списку
+	void list_print() {
+		ListNode *current = this;
+		while (current) {
+			cout << current->data << ' ';
+			current = current->next;
+		}
+		cout << endl;
+	}
 };
 //-------------------------
 ListNode *first(int);
@@ -21,7 +31,6 @@ void add(ListNode **, int);
 ListNode *find(ListNode * const, int);
 bool remove(ListNode **, ListNode **, int);
 ListNode *insert(ListNode * const, ListNode **, int, int);
-void list_print(ListNode *);
 void list_delete(ListNode *);
 //-------------------------
 int main() {
@@ -37,7 +46,7 @@ int main() {
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
 		add(&pend, i);
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	//вставка елемента k після елемента m
 	cout << "Insert = ";
 	//cin >> k;
@@ -48,7 +57,7 @@ int main() {
 	m = 4;
 	cout << m << endl;
 	p = insert(pbeg, &pend, m, k);
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	//вилучення елемента k
 	cout << "Delete = ";
 	//cin >> k;
@@ -56,7 +65,7 @@ int main() {
 	cout << k << endl;
 	if (!remove(&pbeg, &pend, k))
 		cout << "no find " << endl;
-	list_print(pbeg);  //виведення списку
+	pbeg->list_print();  //виведення списку
 	list_delete(pbeg);  //знищення списку
 	//system("pause");
 	return 0;
@@ -131,16 +140,7 @@ ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int d) {
 				  //наприклад, вставку в кінець списку,
 				  //передбачивши можливу порожність списку
 }
-//-------------------------------------------------------
-//виведення списку
-void list_print(ListNode *pbeg) {
-	ListNode *pv = pbeg;
-	while (pv) {
-		cout << pv->data << ' ';
-		pv = pv->next;
-	}
-	cout << endl;
-}
+
 //-------------------------------------------------------
 //знищення списку
 void list_delete(ListNode *pbeg) {
