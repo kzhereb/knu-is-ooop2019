@@ -52,6 +52,9 @@ public:
 
 };
 
+ListNode *find(ListNode * const, int);
+
+
 class DoublyLinkedList {
 public:
 	ListNode* begin;
@@ -75,14 +78,36 @@ public:
 		end->next = pv;
 		end = pv;
 	}
+
+	//-------------------------------------------------------
+	//вставка елемента
+	ListNode *insert(int key, int data) {
+		if (ListNode *pkey = find(begin, key)) {
+
+			//зв`язок нового вузла з наступним
+			//зв`язок нового вузла з попереднім
+			ListNode *pv = new ListNode(data,pkey, pkey->next);
+
+			pkey->next = pv;  //зв`язок попереднього з новим вузлом
+			//зв`язок наступного з новим вузлом
+			if (pkey != end)
+				(pv->next)->prev = pv;
+			else
+				end = pv;  //якщо вузол стає останнім, змінюємо покажчик на кінець
+			return pv;
+		}
+		return nullptr;  //місце для вставки не було знайдено
+						 //можна було б реалізовувати іншу обробку
+						 //наприклад, вставку в кінець списку,
+						 //передбачивши можливу порожність списку
+	}
 };
 
 //-------------------------
 
 
-ListNode *find(ListNode * const, int);
+
 bool remove(ListNode **, ListNode **, int);
-ListNode *insert(ListNode * const, ListNode **, int, int);
 
 //-------------------------
 int main() {
@@ -100,16 +125,16 @@ int main() {
 		my_list.add(i);
 	my_list.print();  //виведення списку
 	//вставка елемента k після елемента m
-//	cout << "Insert = ";
-//	//cin >> k;
-//	k = 42;
-//	cout << k << endl;
-//	cout << "After = ";
-//	//cin >> m;
-//	m = 4;
-//	cout << m << endl;
-//	p = insert(pbeg, &pend, m, k);
-//	pbeg->list_print();  //виведення списку
+	cout << "Insert = ";
+	//cin >> k;
+	k = 42;
+	cout << k << endl;
+	cout << "After = ";
+	//cin >> m;
+	m = 4;
+	cout << m << endl;
+	my_list.insert(m, k);
+	my_list.print();  //виведення списку
 //	//вилучення елемента k
 //	cout << "Delete = ";
 //	//cin >> k;
@@ -156,28 +181,7 @@ bool remove(ListNode **pbeg, ListNode **pend, int key) {
 	}
 	return false;
 }
-//-------------------------------------------------------
-//вставка елемента
-ListNode *insert(ListNode * const pbeg, ListNode **pend, int key, int data) {
-	if (ListNode *pkey = find(pbeg, key)) {
 
-		//зв`язок нового вузла з наступним
-		//зв`язок нового вузла з попереднім
-		ListNode *pv = new ListNode(data,pkey, pkey->next);
-
-		pkey->next = pv;  //зв`язок попереднього з новим вузлом
-		//зв`язок наступного з новим вузлом
-		if (pkey != *pend)
-			(pv->next)->prev = pv;
-		else
-			*pend = pv;  //якщо вузол стає останнім, змінюємо покажчик на кінець
-		return pv;
-	}
-	return nullptr;  //місце для вставки не було знайдено
-					 //можна було б реалізовувати іншу обробку
-					 //наприклад, вставку в кінець списку,
-					 //передбачивши можливу порожність списку
-}
 
 
 
