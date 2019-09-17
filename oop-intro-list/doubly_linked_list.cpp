@@ -59,6 +59,11 @@ public:
 	int length;
 	ListNode* begin;
 	ListNode* end;
+	DoublyLinkedList(int data) {
+		begin = new ListNode(data); //формування першого елемента списку
+		end = begin;     //список складаєтьсчя з одного елемента
+		length = 1;
+	}
 	//--------------------------------------------------------
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	void add( int data) {
@@ -83,9 +88,7 @@ int main() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList list;
-	list.begin = new ListNode(1); //формування першого елемента списку
-	list.end = list.begin;     //список складаєтьсчя з одного елемента
+	DoublyLinkedList list(1);
 
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
