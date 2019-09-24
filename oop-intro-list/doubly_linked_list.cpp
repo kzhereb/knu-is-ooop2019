@@ -10,6 +10,8 @@
 using std::cout;
 using std::endl;
 
+
+
 template<typename T>
 class ListNode {
 public:
@@ -218,6 +220,47 @@ public:
 	}
 };
 
+template<typename T>
+T get_test_data(int index) {
+	return T{index};
+}
+
+template<typename T>
+void test_list(ArrayList<T>* my_list) {
+	cout<<"Any list"<<endl;
+	int nn;
+	T  k, m;
+	//визначаємось з кількістю елементів
+	cout << "Number = ";
+	//cin >> nn;
+	nn = 7;
+	cout << nn << endl;
+	//ArrayList<double> my_list { 0.1 };
+
+	for (int i = 2; i <= nn; i++)
+		my_list->add(get_test_data<T>(i));
+	my_list->print();
+	//вставка елемента k після елемента m
+	cout << "Insert = ";
+	//cin >> k;
+	k = get_test_data<T>(10);
+	cout << k << endl;
+	cout << "After = ";
+	//cin >> m;
+	m = get_test_data<T>(4);
+	cout << m << endl;
+	my_list->insert(m, k);
+	my_list->print();  //виведення списку
+	//вилучення елемента k
+	cout << "Delete = ";
+	//cin >> k;
+	k = get_test_data<T>(5);
+	cout << k << endl;
+	if (!my_list->remove(k))
+		cout << "no find " << endl;
+	my_list->print();  //виведення списку
+}
+
 void test_doubles() {
 	cout<<"Doubles"<<endl;
 	double nn, k, m;
@@ -321,6 +364,9 @@ int main() {
 	test_doubles();
 	test_int_vectors();
 	test_int_vector_vectors();
+
+	ArrayList<double>* list1 = new ArrayList<double>(0.1);
+	test_list(list1);
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
