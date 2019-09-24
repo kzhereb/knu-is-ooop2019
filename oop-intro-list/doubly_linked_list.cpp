@@ -10,7 +10,15 @@
 using std::cout;
 using std::endl;
 
+template<typename T>
+class List {
+public:
+	void print() {}
+	void add(T data) {}
+	bool insert(T key, T data) { return false;}
+	bool remove(T key) { return false; }
 
+};
 
 template<typename T>
 class ListNode {
@@ -55,7 +63,7 @@ template<typename T>
 ListNode<T> *find(ListNode<T> * const, T);
 
 template<typename T>
-class DoublyLinkedList {
+class DoublyLinkedList: public List<T> {
 private:
 	ListNode<T>* begin;
 	ListNode<T>* end;
@@ -133,7 +141,7 @@ public:
 
 
 template<typename T>
-class ArrayList {
+class ArrayList: public List<T> {
 private:
 	int size;
 	int capacity;
@@ -233,7 +241,7 @@ double get_test_data<double>(int index) {
 
 
 template<typename T>
-void test_list(ArrayList<T>* my_list) {
+void test_list(List<T>* my_list) {
 	cout<<"Any list"<<endl;
 	int nn;
 	T  k, m;
