@@ -148,6 +148,15 @@ private:
 		items = new_items;
 	}
 
+	int find(T key) {
+		for(int i=0;i<size;i++) {
+			if (items[i] == key) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 public:
 	ArrayList(T first_data) {
 		items = new T[INITIAL_CAPACITY];
@@ -176,28 +185,24 @@ public:
 		size++;
 	}
 
-//	//-------------------------------------------------------
-//	//вставка елемента
-//	ListNode<T> *insert(T key, T data) {
-//		if (ListNode<T> *pkey = find(begin, key)) {
-//
-//			//зв`язок нового вузла з наступним
-//			//зв`язок нового вузла з попереднім
-//			ListNode<T> *pv = new ListNode<T>(data, pkey, pkey->next);
-//
-//			pkey->next = pv;  //зв`язок попереднього з новим вузлом
-//			//зв`язок наступного з новим вузлом
-//			if (pkey != end)
-//				(pv->next)->prev = pv;
-//			else
-//				end = pv; //якщо вузол стає останнім, змінюємо покажчик на кінець
-//			return pv;
-//		}
-//		return nullptr;  //місце для вставки не було знайдено
-//						 //можна було б реалізовувати іншу обробку
-//						 //наприклад, вставку в кінець списку,
-//						 //передбачивши можливу порожність списку
-//	}
+	//-------------------------------------------------------
+	//вставка елемента
+	bool insert(T key, T data) {
+		int key_index = find(key);
+		if (key_index == -1) { // not found
+			return false;
+		}
+		if(size==capacity) {
+			grow_capacity();
+		}
+		key_index++; //insert after this index
+		for(int i = size; i>key_index;i--) {
+			items[i] = items[i-1];
+		}
+		items[key_index] = data;
+		size++;
+		return true;
+	}
 //
 //	//-------------------------------------------------------
 //	//вилучення елемента
@@ -228,7 +233,7 @@ void test_doubles() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList<double> my_list { 0.1 };
+	ArrayList<double> my_list { 0.1 };
 
 	for (double i = 1.1; i <= nn; i++)
 		my_list.add(i);
@@ -244,14 +249,14 @@ void test_doubles() {
 	cout << m << endl;
 	my_list.insert(m, k);
 	my_list.print();  //виведення списку
-	//вилучення елемента k
-	cout << "Delete = ";
-	//cin >> k;
-	k = 5.1;
-	cout << k << endl;
-	if (!my_list.remove(k))
-		cout << "no find " << endl;
-	my_list.print();  //виведення списку
+//	//вилучення елемента k
+//	cout << "Delete = ";
+//	//cin >> k;
+//	k = 5.1;
+//	cout << k << endl;
+//	if (!my_list.remove(k))
+//		cout << "no find " << endl;
+//	my_list.print();  //виведення списку
 }
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
