@@ -35,10 +35,6 @@ public:
 	//-------------------------------------------------------
 	//знищення списку
 	~ListNode() {
-		if (this->next) {
-			delete this->next;
-		}
-
 	}
 
 	//-------------------------------------------------------
@@ -68,6 +64,14 @@ public:
 
 	}
 
+	~DoublyLinkedList() {
+		ListNode<T> *current=begin, *to_delete;
+		while (current) {
+			to_delete = current;
+			current = current->next;
+			delete to_delete;
+		}
+	}
 	void print() {
 		begin->list_print();
 	}
@@ -118,7 +122,6 @@ public:
 				(pkey->prev)->next = pkey->next;
 				(pkey->next)->prev = pkey->prev;
 			}
-			pkey->next = nullptr; // HACK: so that entire list is not deleted
 			delete pkey;
 			return true;
 		}
