@@ -13,10 +13,10 @@ using std::endl;
 template<typename T>
 class List {
 public:
-	void print() {}
-	void add(T data) {}
-	bool insert(T key, T data) { return false;}
-	bool remove(T key) { return false; }
+	virtual void print() {}
+	virtual void add(T data) {}
+	virtual bool insert(T key, T data) { return false;}
+	virtual bool remove(T key) { return false; }
 
 };
 
@@ -82,13 +82,13 @@ public:
 			delete to_delete;
 		}
 	}
-	void print() {
+	void print() override {
 		begin->list_print();
 	}
 
 	//--------------------------------------------------------
 	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(T data) {
+	void add(T data) override{
 		ListNode<T> *pv = new ListNode<T>(data, end, nullptr);
 
 		end->next = pv;
@@ -97,7 +97,7 @@ public:
 
 	//-------------------------------------------------------
 	//вставка елемента
-	ListNode<T> *insert(T key, T data) {
+	bool insert(T key, T data) override {
 		if (ListNode<T> *pkey = find(begin, key)) {
 
 			//зв`язок нового вузла з наступним
@@ -110,9 +110,9 @@ public:
 				(pv->next)->prev = pv;
 			else
 				end = pv; //якщо вузол стає останнім, змінюємо покажчик на кінець
-			return pv;
+			return true;
 		}
-		return nullptr;  //місце для вставки не було знайдено
+		return false;  //місце для вставки не було знайдено
 						 //можна було б реалізовувати іншу обробку
 						 //наприклад, вставку в кінець списку,
 						 //передбачивши можливу порожність списку
@@ -120,7 +120,7 @@ public:
 
 	//-------------------------------------------------------
 	//вилучення елемента
-	bool remove(T key) {
+	bool remove(T key) override {
 		if (ListNode<T> *pkey = find(begin, key)) {
 			if (pkey == begin) {
 				begin = begin->next;
@@ -178,7 +178,7 @@ public:
 	~ArrayList() {
 		delete [] items;
 	}
-	void print() {
+	void print() override{
 		for(int i=0;i<size;i++) {
 			cout<<items[i]<<" ";
 		}
@@ -187,7 +187,7 @@ public:
 
 	//--------------------------------------------------------
 	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(T data) {
+	void add(T data) override{
 		if (size == capacity) {
 			grow_capacity();
 		}
@@ -197,7 +197,7 @@ public:
 
 	//-------------------------------------------------------
 	//вставка елемента
-	bool insert(T key, T data) {
+	bool insert(T key, T data) override{
 		int key_index = find(key);
 		if (key_index == -1) { // not found
 			return false;
@@ -216,7 +216,7 @@ public:
 //
 //	//-------------------------------------------------------
 //	//вилучення елемента
-	bool remove(T key) {
+	bool remove(T key) override {
 		int key_index = find(key);
 		if (key_index == -1) { // not found
 			return false;
@@ -383,7 +383,7 @@ int main() {
 
 	ArrayList<double>* list1 = new ArrayList<double>(0.1);
 	test_list(list1);
-	ArrayList<vector<int>>* list2 = new ArrayList<vector<int>>({1,2});
+	DoublyLinkedList<vector<int>>* list2 = new DoublyLinkedList<vector<int>>({1,2});
 	test_list(list2);
 
 	int nn, k, m;
