@@ -4,7 +4,7 @@
  *  Created on: Sep 17, 2019
  *      Author: KZ
  */
-
+#define CATCH_CONFIG_DISABLE
 #include "catch.hpp"
 
 #include <string>
