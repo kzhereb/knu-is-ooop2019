@@ -13,10 +13,10 @@ using std::endl;
 template<typename T>
 class List {
 public:
-	virtual void print() {}
-	virtual void add(T data) {}
-	virtual bool insert(T key, T data) { return false;}
-	virtual bool remove(T key) { return false; }
+	virtual void print()=0;
+	virtual void add(T data)=0;
+	virtual bool insert(T key, T data)=0;
+	virtual bool remove(T key)=0;
 
 };
 
