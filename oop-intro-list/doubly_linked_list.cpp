@@ -225,6 +225,8 @@ T get_test_data(int index) {
 	return T{index};
 }
 
+
+
 template<typename T>
 void test_list(ArrayList<T>* my_list) {
 	cout<<"Any list"<<endl;
@@ -361,12 +363,15 @@ void test_int_vector_vectors() {
 }
 //-------------------------
 int main() {
+	using std::vector;
 	test_doubles();
 	test_int_vectors();
 	test_int_vector_vectors();
 
 	ArrayList<double>* list1 = new ArrayList<double>(0.1);
 	test_list(list1);
+	ArrayList<vector<int>>* list2 = new ArrayList<vector<int>>({1,2});
+	test_list(list2);
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
