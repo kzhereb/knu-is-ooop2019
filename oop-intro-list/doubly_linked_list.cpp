@@ -208,10 +208,27 @@ void test_int_vectors() {
 //	my_list.print();  //виведення списку
 }
 
+void test_int_vector_vectors() {
+	cout<<"Int vector vectors"<<endl;
+	using std::vector;
+	int nn;
+	vector<vector<int>> k, m;
+	//визначаємось з кількістю елементів
+	cout << "Number = ";
+	//cin >> nn;
+	nn = 7;
+	cout << nn << endl;
+	DoublyLinkedList<vector<vector<int>>> my_list { { { 0,1}, {1,9} } };
+
+	for (int i = 2; i <= nn; i++)
+		my_list.add({ { 0,i}, {i,9} });
+	my_list.print();
+}
 //-------------------------
 int main() {
 	test_doubles();
 	test_int_vectors();
+	test_int_vector_vectors();
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
