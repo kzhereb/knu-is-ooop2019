@@ -162,7 +162,7 @@ public:
 		items = new T[INITIAL_CAPACITY];
 		items[0] = first_data;
 		capacity = INITIAL_CAPACITY;
-		size = 0;
+		size = 1;
 	}
 
 	~ArrayList() {
