@@ -129,6 +129,97 @@ public:
 	}
 };
 
+
+template<typename T>
+class ArrayList {
+private:
+	int size;
+	int capacity;
+	T* items;
+	const int INITIAL_CAPACITY = 4;
+
+	void grow_capacity() {
+		capacity *=2;
+		T* new_items = new T[capacity];
+		for(int i=0; i<size;i++) {
+			new_items[i] = items[i];
+		}
+		delete [] items;
+		items = new_items;
+	}
+
+public:
+	ArrayList(T first_data) {
+		items = new T[INITIAL_CAPACITY];
+		items[0] = first_data;
+		capacity = INITIAL_CAPACITY;
+		size = 0;
+	}
+
+	~ArrayList() {
+		delete [] items;
+	}
+	void print() {
+		for(int i=0;i<size;i++) {
+			cout<<items[i]<<" ";
+		}
+		cout<<endl;
+	}
+
+	//--------------------------------------------------------
+	//додавання елементів в кінець списку 2, 3, ..., nn
+	void add(T data) {
+		if (size == capacity) {
+			grow_capacity();
+		}
+		items[size]=data;
+		size++;
+	}
+
+//	//-------------------------------------------------------
+//	//вставка елемента
+//	ListNode<T> *insert(T key, T data) {
+//		if (ListNode<T> *pkey = find(begin, key)) {
+//
+//			//зв`язок нового вузла з наступним
+//			//зв`язок нового вузла з попереднім
+//			ListNode<T> *pv = new ListNode<T>(data, pkey, pkey->next);
+//
+//			pkey->next = pv;  //зв`язок попереднього з новим вузлом
+//			//зв`язок наступного з новим вузлом
+//			if (pkey != end)
+//				(pv->next)->prev = pv;
+//			else
+//				end = pv; //якщо вузол стає останнім, змінюємо покажчик на кінець
+//			return pv;
+//		}
+//		return nullptr;  //місце для вставки не було знайдено
+//						 //можна було б реалізовувати іншу обробку
+//						 //наприклад, вставку в кінець списку,
+//						 //передбачивши можливу порожність списку
+//	}
+//
+//	//-------------------------------------------------------
+//	//вилучення елемента
+//	bool remove(T key) {
+//		if (ListNode<T> *pkey = find(begin, key)) {
+//			if (pkey == begin) {
+//				begin = begin->next;
+//				begin->prev = nullptr;
+//			} else if (pkey == end) {
+//				end = end->prev;
+//				end->next = nullptr;
+//			} else {
+//				(pkey->prev)->next = pkey->next;
+//				(pkey->next)->prev = pkey->prev;
+//			}
+//			delete pkey;
+//			return true;
+//		}
+//		return false;
+//	}
+};
+
 void test_doubles() {
 	cout<<"Doubles"<<endl;
 	double nn, k, m;
@@ -184,7 +275,7 @@ void test_int_vectors() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList<vector<int>> my_list { { 1,4,5} };
+	ArrayList<vector<int>> my_list { { 1,4,5} };
 
 	for (int i = 2; i <= nn; i++)
 		my_list.add({i,4,5});
