@@ -206,23 +206,16 @@ public:
 //
 //	//-------------------------------------------------------
 //	//вилучення елемента
-//	bool remove(T key) {
-//		if (ListNode<T> *pkey = find(begin, key)) {
-//			if (pkey == begin) {
-//				begin = begin->next;
-//				begin->prev = nullptr;
-//			} else if (pkey == end) {
-//				end = end->prev;
-//				end->next = nullptr;
-//			} else {
-//				(pkey->prev)->next = pkey->next;
-//				(pkey->next)->prev = pkey->prev;
-//			}
-//			delete pkey;
-//			return true;
-//		}
-//		return false;
-//	}
+	bool remove(T key) {
+		int key_index = find(key);
+		if (key_index == -1) { // not found
+			return false;
+		}
+		for(int i=key_index;i<size-1;i++) {
+			items[i]=items[i+1];
+		}
+		return true;
+	}
 };
 
 void test_doubles() {
@@ -335,7 +328,7 @@ int main() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList<int> my_list { 1 };
+	ArrayList<int> my_list { 1 };
 
 	//додавання елементів в кінець списку 2, 3, ..., nn
 	for (int i = 2; i <= nn; i++)
