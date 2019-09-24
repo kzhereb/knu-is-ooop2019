@@ -383,7 +383,7 @@ int main() {
 
 	ArrayList<double>* list1 = new ArrayList<double>(0.1);
 	test_list(list1);
-	DoublyLinkedList<vector<int>>* list2 = new DoublyLinkedList<vector<int>>({1,2});
+	List<vector<int>>* list2 = new DoublyLinkedList<vector<int>>({1,2});
 	test_list(list2);
 
 	int nn, k, m;
