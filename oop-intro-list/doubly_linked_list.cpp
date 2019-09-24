@@ -225,6 +225,11 @@ T get_test_data(int index) {
 	return T{index};
 }
 
+template<>
+double get_test_data<double>(int index) {
+	return index+0.1;
+}
+
 
 
 template<typename T>
