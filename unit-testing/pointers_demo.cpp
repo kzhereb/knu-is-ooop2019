@@ -4,7 +4,7 @@
  *  Created on: Sep 17, 2019
  *      Author: KZ
  */
-#define CATCH_CONFIG_DISABLE
+//#define CATCH_CONFIG_DISABLE
 #include "catch.hpp"
 
 #include <string>
@@ -136,4 +136,13 @@ TEST_CASE("Pointers and pointers to pointers (class)","[pointer]") {
 		CHECK(val == 45);
 	}
  }
+
+TEST_CASE("Conversions","[type]") {
+	int arr[10] = {1,2,3};
+	//CHECK(arr[0.1]==1);  //compile error
+	//CHECK(*(arr+0.1)==1);//compile error
+	CHECK(arr[int(0.1)]==1);
+	int index = 0.1;
+	CHECK(arr[index]==1);
+}
 
