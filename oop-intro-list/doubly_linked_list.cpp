@@ -486,6 +486,16 @@ int main() {
 			new ArrayListConfigurable<double,GrowTriplePolicy,ShrinkQuarterPolicy>(0.1);
 	test_list(list3);
 
+	bool need_triple = true;
+	GrowPolicy* grow_policy = need_triple ? new GrowTriplePolicy: new GrowPolicy;
+	bool need_shrink = false;
+	ShrinkPolicy* shrink_policy = need_shrink ? new ShrinkQuarterPolicy: new ShrinkPolicy;
+
+	ArrayListConfigurable<double,GrowPolicy,ShrinkPolicy>* list4 =
+				new ArrayListConfigurable<double,GrowPolicy,ShrinkPolicy>(0.1,grow_policy, shrink_policy);
+	test_list(list4);
+
+
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
