@@ -147,15 +147,7 @@ protected:
 	T* items;
 	const int INITIAL_CAPACITY = 4;
 
-	virtual void grow_capacity() {
-		capacity *= 2;
-		T* new_items = new T[capacity];
-		for (int i = 0; i < size; i++) {
-			new_items[i] = items[i];
-		}
-		delete[] items;
-		items = new_items;
-	}
+	virtual void grow_capacity();
 
 	int find(T key) {
 		for (int i = 0; i < size; i++) {
@@ -227,6 +219,17 @@ public:
 		return true;
 	}
 };
+
+template<typename T>
+void ArrayList<T>::grow_capacity() {
+	capacity *= 2;
+	T* new_items = new T[capacity];
+	for (int i = 0; i < size; i++) {
+		new_items[i] = items[i];
+	}
+	delete[] items;
+	items = new_items;
+}
 
 template<typename T, typename GrowPolicyT, typename ShrinkPolicyT>
 class ArrayListConfigurable: public ArrayList<T> {
