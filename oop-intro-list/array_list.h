@@ -97,7 +97,7 @@ public:
 };
 
 
-
+#include "array_list.hxx"
 
 
 #endif /* OOP_INTRO_LIST_ARRAY_LIST_H_ */
