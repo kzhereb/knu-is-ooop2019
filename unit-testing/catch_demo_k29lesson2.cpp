@@ -6,7 +6,7 @@
  */
 
 //#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#define CATCH_CONFIG_DISABLE // Disables assertions and test case registration
+#define    CATCH_CONFIG_DISABLE // Disables assertions and test case registration
 #include "catch.hpp"
 namespace k29lesson2 {
 unsigned int Factorial( unsigned int number ) {
