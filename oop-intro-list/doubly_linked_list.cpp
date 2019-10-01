@@ -4,7 +4,8 @@
  *  Created on: Sep 16, 2019
  *      Author: KZ
  */
-
+#include "list.h"
+#include "array_list.h"
 #include "policies.h"
 
 #include <iostream>
@@ -12,15 +13,7 @@
 using std::cout;
 using std::endl;
 
-template<typename T>
-class List {
-public:
-	virtual void print()=0;
-	virtual void add(T data)=0;
-	virtual bool insert(T key, T data)=0;
-	virtual bool remove(T key)=0;
 
-};
 
 template<typename T>
 class ListNode {
@@ -141,97 +134,7 @@ public:
 	}
 };
 
-template<typename T>
-class ArrayList: public List<T> {
-protected:
-	int size;
-	int capacity;
-	T* items;
-	const int INITIAL_CAPACITY = 4;
 
-	virtual void grow_capacity();
-
-	int find(T key) {
-		for (int i = 0; i < size; i++) {
-			if (items[i] == key) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-public:
-	ArrayList(T first_data) {
-		items = new T[INITIAL_CAPACITY];
-		items[0] = first_data;
-		capacity = INITIAL_CAPACITY;
-		size = 1;
-	}
-
-	~ArrayList() {
-		delete[] items;
-	}
-	void print() override {
-		for (int i = 0; i < size; i++) {
-			cout << items[i] << " ";
-		}
-		cout << endl;
-	}
-
-	//--------------------------------------------------------
-	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(T data) override {
-		if (size == capacity) {
-			grow_capacity();
-		}
-		items[size] = data;
-		size++;
-	}
-
-	//-------------------------------------------------------
-	//вставка елемента
-	bool insert(T key, T data) override {
-		int key_index = find(key);
-		if (key_index == -1) { // not found
-			return false;
-		}
-		if (size == capacity) {
-			grow_capacity();
-		}
-		key_index++; //insert after this index
-		for (int i = size; i > key_index; i--) {
-			items[i] = items[i - 1];
-		}
-		items[key_index] = data;
-		size++;
-		return true;
-	}
-//
-//	//-------------------------------------------------------
-//	//вилучення елемента
-	bool remove(T key) override {
-		int key_index = find(key);
-		if (key_index == -1) { // not found
-			return false;
-		}
-		for (int i = key_index; i < size - 1; i++) {
-			items[i] = items[i + 1];
-		}
-		size--;
-		return true;
-	}
-};
-
-template<typename T>
-void ArrayList<T>::grow_capacity() {
-	capacity *= 2;
-	T* new_items = new T[capacity];
-	for (int i = 0; i < size; i++) {
-		new_items[i] = items[i];
-	}
-	delete[] items;
-	items = new_items;
-}
 
 template<typename T, typename GrowPolicyT, typename ShrinkPolicyT>
 class ArrayListConfigurable: public ArrayList<T> {
