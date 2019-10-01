@@ -224,6 +224,7 @@ public:
 		for(int i=key_index;i<size-1;i++) {
 			items[i]=items[i+1];
 		}
+		size--;
 		return true;
 	}
 };
