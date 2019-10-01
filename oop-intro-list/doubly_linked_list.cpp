@@ -5,8 +5,10 @@
  *      Author: KZ
  */
 #include "list.h"
+#include "helper.h"
 #include "array_list.h"
 #include "policies.h"
+
 
 #include <iostream>
 #include <vector>
@@ -269,17 +271,7 @@ void test_doubles() {
 //		cout << "no find " << endl;
 //	my_list.print();  //виведення списку
 }
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
-	os << "[";
-	char sep = ' ';
-	for (const T& obj : vec) {
-		os << sep << obj;
-		sep = ',';
-	}
-	os << " ]";
-	return os;
-}
+
 
 void test_int_vectors() {
 	cout << "Int vectors" << endl;

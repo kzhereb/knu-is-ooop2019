@@ -10,6 +10,7 @@
 #define OOP_INTRO_LIST_ARRAY_LIST_H_
 
 #include "list.h"
+#include "helper.h"
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -95,16 +96,7 @@ public:
 	}
 };
 
-template<typename T>
-void ArrayList<T>::grow_capacity() {
-	capacity *= 2;
-	T* new_items = new T[capacity];
-	for (int i = 0; i < size; i++) {
-		new_items[i] = items[i];
-	}
-	delete[] items;
-	items = new_items;
-}
+
 
 
 
