@@ -4,7 +4,7 @@
  *  Created on: Sep 10, 2019
  *      Author: KZ
  */
-#define CATCH_CONFIG_DISABLE // Disables assertions and test case registration
+#define   CATCH_CONFIG_DISABLE // Disables assertions and test case registration
 
 #include "catch.hpp"
 
