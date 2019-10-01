@@ -17,13 +17,7 @@ class GrowPolicy: public Policy {
 public:
 	bool change_capacity(int size, int& capacity) override ;
 };
-bool GrowPolicy::change_capacity(int size, int& capacity) {
-	if (size == capacity) {
-		capacity *=2;
-		return true;
-	}
-	return false;
-}
+
 
 class GrowTriplePolicy: public GrowPolicy {
 public:
