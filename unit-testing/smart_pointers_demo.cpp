@@ -33,9 +33,15 @@ public:
 	}
 	int get_value() {return value;}
 	void set_value(int val) { value = val;}
-	~Testable() {
+	virtual ~Testable() {
 		log("Testable dtor");
 	}
+};
+
+class TestableSub: public Testable {
+public:
+	TestableSub() {log("TestableSub ctor");}
+	~TestableSub() {log("TestableSub dtor");}
 };
 
 TEST_CASE("constructors and destructors", "[constructor]") {
@@ -79,6 +85,67 @@ TEST_CASE("constructors and destructors", "[constructor]") {
 		CHECK(global_log.size()==2);
 		CHECK(global_log[1]=="Testable dtor");
 	}
+
+
+
+
+	SECTION("stack allocation subclass"){
+			{
+				TestableSub under_test;
+				CHECK(global_log.size()==2);
+				CHECK(global_log[0]=="Testable ctor");
+				CHECK(global_log[1]=="TestableSub ctor");
+				under_test.set_value(145);
+				CHECK(under_test.get_value()==145);
+			}
+			CHECK(global_log.size()==4);
+			CHECK(global_log[2]=="TestableSub dtor");
+			CHECK(global_log[3]=="Testable dtor");
+		}
+
+	SECTION("heap allocation subclass"){
+			//{
+				TestableSub* under_test = new TestableSub;
+				CHECK(global_log.size()==2);
+				CHECK(global_log[0]=="Testable ctor");
+				CHECK(global_log[1]=="TestableSub ctor");
+				under_test->set_value(145);
+				CHECK(under_test->get_value()==145);
+				delete under_test;
+			//}
+			CHECK(global_log.size()==4);
+			CHECK(global_log[2]=="TestableSub dtor");
+			CHECK(global_log[3]=="Testable dtor");
+		}
+
+	SECTION("heap allocation subclass using base pointer"){
+			//{
+				Testable* under_test = new TestableSub;
+				CHECK(global_log.size()==2);
+				CHECK(global_log[0]=="Testable ctor");
+				CHECK(global_log[1]=="TestableSub ctor");
+				under_test->set_value(145);
+				CHECK(under_test->get_value()==145);
+				delete under_test;
+			//}
+			CHECK(global_log.size()==4);
+			CHECK(global_log[2]=="TestableSub dtor");
+			CHECK(global_log[3]=="Testable dtor");
+		}
+	SECTION("smart pointer allocation subclass"){
+			{
+				std::unique_ptr<Testable> under_test =
+									std::make_unique<TestableSub>();
+				CHECK(global_log.size()==2);
+				CHECK(global_log[0]=="Testable ctor");
+				CHECK(global_log[1]=="TestableSub ctor");
+				under_test->set_value(145);
+				CHECK(under_test->get_value()==145);
+			}
+			CHECK(global_log.size()==4);
+			CHECK(global_log[2]=="TestableSub dtor");
+			CHECK(global_log[3]=="Testable dtor");
+		}
 
 }
 
