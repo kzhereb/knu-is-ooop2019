@@ -1,7 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "student.h"
+
 #include <QMainWindow>
+
+#include <vector>
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +24,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    std::vector<Student> students;
 };
 
 #endif // MAINWINDOW_H
