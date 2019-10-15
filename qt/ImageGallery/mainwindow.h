@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -18,8 +19,13 @@ public:
 private slots:
     void on_btnAddImage_clicked();
 
+    void on_lstImages_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
+
 private:
     Ui::MainWindow *ui;
+
+    void setCurrentImage(const QString& filename);
 };
 
 #endif // MAINWINDOW_H
