@@ -55,6 +55,12 @@
       <height>192</height>
      </rect>
     </property>
+    <property name="iconSize">
+     <size>
+      <width>384</width>
+      <height>216</height>
+     </size>
+    </property>
     <property name="flow">
      <enum>QListView::LeftToRight</enum>
     </property>

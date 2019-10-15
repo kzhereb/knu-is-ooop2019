@@ -23,5 +23,7 @@ void MainWindow::on_btnAddImage_clicked()
     QPixmap pic(fileName);
     ui->lblCurrentImage->setPixmap(pic);
 
-    ui->lstImages->addItem(new QListWidgetItem(QIcon(fileName), ""));
+    QListWidgetItem * listItem = new QListWidgetItem(QIcon(fileName), "");
+    listItem->setSizeHint( QSize(384,216) );
+    ui->lstImages->addItem(listItem);
 }
