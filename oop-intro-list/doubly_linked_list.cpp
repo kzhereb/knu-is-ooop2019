@@ -4,21 +4,18 @@
  *  Created on: Sep 16, 2019
  *      Author: KZ
  */
+#include "list.h"
+#include "helper.h"
+#include "array_list.h"
+#include "policies.h"
+
 
 #include <iostream>
 #include <vector>
 using std::cout;
 using std::endl;
 
-template<typename T>
-class List {
-public:
-	virtual void print()=0;
-	virtual void add(T data)=0;
-	virtual bool insert(T key, T data)=0;
-	virtual bool remove(T key)=0;
 
-};
 
 template<typename T>
 class ListNode {
@@ -75,7 +72,7 @@ public:
 	}
 
 	~DoublyLinkedList() {
-		ListNode<T> *current=begin, *to_delete;
+		ListNode<T> *current = begin, *to_delete;
 		while (current) {
 			to_delete = current;
 			current = current->next;
@@ -88,7 +85,7 @@ public:
 
 	//--------------------------------------------------------
 	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(T data) override{
+	void add(T data) override {
 		ListNode<T> *pv = new ListNode<T>(data, end, nullptr);
 
 		end->next = pv;
@@ -113,9 +110,9 @@ public:
 			return true;
 		}
 		return false;  //місце для вставки не було знайдено
-						 //можна було б реалізовувати іншу обробку
-						 //наприклад, вставку в кінець списку,
-						 //передбачивши можливу порожність списку
+					   //можна було б реалізовувати іншу обробку
+					   //наприклад, вставку в кінець списку,
+					   //передбачивши можливу порожність списку
 	}
 
 	//-------------------------------------------------------
@@ -140,112 +137,76 @@ public:
 };
 
 
-template<typename T>
-class ArrayList: public List<T> {
-private:
-	int size;
-	int capacity;
-	T* items;
-	const int INITIAL_CAPACITY = 4;
 
-	void grow_capacity() {
-		capacity *=2;
-		T* new_items = new T[capacity];
-		for(int i=0; i<size;i++) {
-			new_items[i] = items[i];
+template<typename T, typename GrowPolicyT, typename ShrinkPolicyT>
+class ArrayListConfigurable: public ArrayList<T> {
+protected:
+	GrowPolicyT* grow_policy;
+	ShrinkPolicyT* shrink_policy;
+	void grow_capacity() override {
+		bool changed = grow_policy->change_capacity(this->size, this->capacity);
+		if (!changed) {return;}
+		T* new_items = new T[this->capacity];
+		for (int i = 0; i < this->size; i++) {
+			new_items[i] = this->items[i];
 		}
-		delete [] items;
-		items = new_items;
+		delete[] this->items;
+		this->items = new_items;
 	}
-
-	int find(T key) {
-		for(int i=0;i<size;i++) {
-			if (items[i] == key) {
-				return i;
-			}
+	void shrink_capacity() {
+		bool changed = shrink_policy->change_capacity(this->size, this->capacity);
+		if (!changed) {return;}
+		T* new_items = new T[this->capacity];
+		for (int i = 0; i < this->size; i++) {
+			new_items[i] = this->items[i];
 		}
-		return -1;
+		delete[] this->items;
+		this->items = new_items;
 	}
-
 public:
-	ArrayList(T first_data) {
-		items = new T[INITIAL_CAPACITY];
-		items[0] = first_data;
-		capacity = INITIAL_CAPACITY;
-		size = 1;
+	ArrayListConfigurable(T first_data, GrowPolicyT* grow_policy = nullptr,
+			ShrinkPolicyT* shrink_policy = nullptr) :
+			ArrayList<T> { first_data }, grow_policy { grow_policy }, shrink_policy {
+					shrink_policy } {
+		if (grow_policy == nullptr) {
+			this->grow_policy = new GrowPolicyT;
+		}
+		if (shrink_policy == nullptr) {
+			this->shrink_policy = new ShrinkPolicyT;
+		}
 	}
 
-	~ArrayList() {
-		delete [] items;
-	}
-	void print() override{
-		for(int i=0;i<size;i++) {
-			cout<<items[i]<<" ";
-		}
-		cout<<endl;
-	}
-
-	//--------------------------------------------------------
-	//додавання елементів в кінець списку 2, 3, ..., nn
-	void add(T data) override{
-		if (size == capacity) {
-			grow_capacity();
-		}
-		items[size]=data;
-		size++;
-	}
-
-	//-------------------------------------------------------
-	//вставка елемента
-	bool insert(T key, T data) override{
-		int key_index = find(key);
-		if (key_index == -1) { // not found
-			return false;
-		}
-		if(size==capacity) {
-			grow_capacity();
-		}
-		key_index++; //insert after this index
-		for(int i = size; i>key_index;i--) {
-			items[i] = items[i-1];
-		}
-		items[key_index] = data;
-		size++;
-		return true;
-	}
-//
-//	//-------------------------------------------------------
-//	//вилучення елемента
 	bool remove(T key) override {
-		int key_index = find(key);
+		int key_index = this->find(key);
 		if (key_index == -1) { // not found
 			return false;
 		}
-		for(int i=key_index;i<size-1;i++) {
-			items[i]=items[i+1];
+		shrink_capacity();
+		for (int i = key_index; i < this->size - 1; i++) {
+			this->items[i] = this->items[i + 1];
 		}
-		size--;
+		this->size--;
 		return true;
 	}
+
 };
+
 
 template<typename T>
 T get_test_data(int index) {
-	return T{index};
+	return T { index };
 }
 
 template<>
 double get_test_data<double>(int index) {
-	return index+0.1;
+	return index + 0.1;
 }
-
-
 
 template<typename T>
 void test_list(List<T>* my_list) {
-	cout<<"Any list"<<endl;
+	cout << "Any list" << endl;
 	int nn;
-	T  k, m;
+	T k, m;
 	//визначаємось з кількістю елементів
 	cout << "Number = ";
 	//cin >> nn;
@@ -278,7 +239,7 @@ void test_list(List<T>* my_list) {
 }
 
 void test_doubles() {
-	cout<<"Doubles"<<endl;
+	cout << "Doubles" << endl;
 	double nn, k, m;
 	//визначаємось з кількістю елементів
 	cout << "Number = ";
@@ -310,20 +271,10 @@ void test_doubles() {
 //		cout << "no find " << endl;
 //	my_list.print();  //виведення списку
 }
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
-	os<<"[";
-	char sep = ' ';
-	for(const T& obj : vec) {
-		os<<sep<<obj;
-		sep = ',';
-	}
-	os<<" ]";
-	return os;
-}
+
 
 void test_int_vectors() {
-	cout<<"Int vectors"<<endl;
+	cout << "Int vectors" << endl;
 	using std::vector;
 	int nn;
 	vector<int> k, m;
@@ -332,10 +283,10 @@ void test_int_vectors() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	ArrayList<vector<int>> my_list { { 1,4,5} };
+	ArrayList<vector<int>> my_list { { 1, 4, 5 } };
 
 	for (int i = 2; i <= nn; i++)
-		my_list.add({i,4,5});
+		my_list.add( { i, 4, 5 });
 	my_list.print();
 
 //	//вставка елемента k після елемента m
@@ -360,7 +311,7 @@ void test_int_vectors() {
 }
 
 void test_int_vector_vectors() {
-	cout<<"Int vector vectors"<<endl;
+	cout << "Int vector vectors" << endl;
 	using std::vector;
 	int nn;
 	vector<vector<int>> k, m;
@@ -369,10 +320,10 @@ void test_int_vector_vectors() {
 	//cin >> nn;
 	nn = 7;
 	cout << nn << endl;
-	DoublyLinkedList<vector<vector<int>>> my_list { { { 0,1}, {1,9} } };
+	DoublyLinkedList<vector<vector<int>>> my_list { { { 0, 1 }, { 1, 9 } } };
 
 	for (int i = 2; i <= nn; i++)
-		my_list.add({ { 0,i}, {i,9} });
+		my_list.add( { { 0, i }, { i, 9 } });
 	my_list.print();
 }
 //-------------------------
@@ -384,8 +335,23 @@ int main() {
 
 	ArrayList<double>* list1 = new ArrayList<double>(0.1);
 	test_list(list1);
-	List<vector<int>>* list2 = new DoublyLinkedList<vector<int>>({1,2});
+	List<vector<int>>* list2 = new DoublyLinkedList<vector<int>>( { 1, 2 });
 	test_list(list2);
+
+	ArrayListConfigurable<double,GrowTriplePolicy,ShrinkQuarterPolicy>* list3 =
+			new ArrayListConfigurable<double,GrowTriplePolicy,ShrinkQuarterPolicy>(0.1);
+	test_list(list3);
+
+	bool need_triple = true;
+	GrowPolicy* grow_policy = need_triple ? new GrowTriplePolicy: new GrowPolicy;
+	bool need_shrink = false;
+	ShrinkPolicy* shrink_policy = need_shrink ? new ShrinkQuarterPolicy: new ShrinkPolicy;
+
+	ArrayListConfigurable<double,GrowPolicy,ShrinkPolicy>* list4 =
+				new ArrayListConfigurable<double,GrowPolicy,ShrinkPolicy>(0.1,grow_policy, shrink_policy);
+	test_list(list4);
+
+
 
 	int nn, k, m;
 	//визначаємось з кількістю елементів
