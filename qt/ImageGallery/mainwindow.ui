@@ -46,6 +46,22 @@
      <string>Add Image</string>
     </property>
    </widget>
+   <widget class="QListWidget" name="lstImages">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>410</y>
+      <width>831</width>
+      <height>192</height>
+     </rect>
+    </property>
+    <property name="flow">
+     <enum>QListView::LeftToRight</enum>
+    </property>
+    <property name="viewMode">
+     <enum>QListView::IconMode</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

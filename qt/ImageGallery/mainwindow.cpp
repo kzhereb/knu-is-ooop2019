@@ -22,4 +22,6 @@ void MainWindow::on_btnAddImage_clicked()
     qDebug()<<fileName;
     QPixmap pic(fileName);
     ui->lblCurrentImage->setPixmap(pic);
+
+    ui->lstImages->addItem(new QListWidgetItem(QIcon(fileName), ""));
 }
