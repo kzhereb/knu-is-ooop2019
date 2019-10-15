@@ -31,6 +31,7 @@ void MainWindow::on_btnAdd_clicked()
     student.setCourse(course);
     students.push_back(student);
 
-    ui->lstStudents->addItem(ui->leName->text());
+    QString display_name = QString("%1: %2 course, %3").arg(name.c_str()).arg(course).arg(group.c_str());
+    ui->lstStudents->addItem(display_name);
 
 }
