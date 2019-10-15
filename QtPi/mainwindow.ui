@@ -53,28 +53,27 @@
      </property>
     </widget>
    </widget>
-   <widget class="QLineEdit" name="leSteps">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>50</y>
-      <width>113</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="lblSteps">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>260</x>
       <y>10</y>
-      <width>55</width>
-      <height>16</height>
+      <width>135</width>
+      <height>46</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Steps</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lblSteps">
+       <property name="text">
+        <string>Steps</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="leSteps"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
