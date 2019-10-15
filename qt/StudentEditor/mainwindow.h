@@ -24,6 +24,8 @@ private slots:
 
     void on_lstStudents_currentRowChanged(int currentRow);
 
+    void on_btnEdit_clicked();
+
 private:
     Ui::MainWindow *ui;
     std::vector<Student> students;

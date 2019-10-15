@@ -48,3 +48,18 @@ void MainWindow::on_lstStudents_currentRowChanged(int currentRow)
     ui->leGroup->setText(student.getGroup().c_str());
     ui->leCourse->setText(QString::number(student.getCourse()));
 }
+
+void MainWindow::on_btnEdit_clicked()
+{
+    int currentRow = ui->lstStudents->currentRow();
+    if (currentRow == -1) { return;}
+    Student& student = students[currentRow];
+    student.setName(ui->leName->text().toUtf8().constData());
+    student.setAge(ui->leAge->text().toInt());
+    student.setGroup(ui->leGroup->text().toUtf8().constData());
+    student.setCourse(ui->leCourse->text().toInt());
+    QString display_name = QString("%1: %2 course, %3").arg(student.getName().c_str()).arg(student.getCourse()).arg(student.getGroup().c_str());
+
+    ui->lstStudents->currentItem()->setText(display_name);
+
+}
