@@ -35,3 +35,16 @@ void MainWindow::on_btnAdd_clicked()
     ui->lstStudents->addItem(display_name);
 
 }
+
+void MainWindow::on_lstStudents_currentRowChanged(int currentRow)
+{
+    if (currentRow == -1) { // not selected
+        qDebug()<<"No selected item";
+        return;
+    }
+    Student student = students[currentRow];
+    ui->leName->setText(student.getName().c_str());
+    ui->leAge->setText(QString::number(student.getAge()));
+    ui->leGroup->setText(student.getGroup().c_str());
+    ui->leCourse->setText(QString::number(student.getCourse()));
+}

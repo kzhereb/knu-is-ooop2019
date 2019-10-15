@@ -22,6 +22,8 @@ public:
 private slots:
     void on_btnAdd_clicked();
 
+    void on_lstStudents_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
     std::vector<Student> students;

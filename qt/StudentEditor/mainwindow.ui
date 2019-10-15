@@ -54,7 +54,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="leAge"/>
+       <widget class="QLineEdit" name="leAge">
+        <property name="text">
+         <string>19</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -76,7 +80,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="leGroup"/>
+       <widget class="QLineEdit" name="leGroup">
+        <property name="text">
+         <string>K28</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -98,7 +106,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="leCourse"/>
+       <widget class="QLineEdit" name="leCourse">
+        <property name="text">
+         <string>2</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
