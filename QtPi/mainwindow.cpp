@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "picalculator.h"
 #include <QDebug>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,10 +36,29 @@ void MainWindow::calculate(const QString& name)
     int steps = ui->leSteps->text().toInt();
     double result = calc->calculate(steps);
     QString textResult;
-    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
+    //ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
+    addResultToTable(name, steps, result);
     qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result);
 }
 
+void MainWindow::addResultToTable(const QString& name, int steps, double result)
+{
+    QString time = QDateTime::currentDateTime().toString();
+    int rowCount = ui->tblResults->rowCount();
+    ui->tblResults->setRowCount(rowCount+1);
+
+    QTableWidgetItem* itemDT = new QTableWidgetItem(time);
+    ui->tblResults->setItem(rowCount,0,itemDT);
+
+    QTableWidgetItem* itemName = new QTableWidgetItem(name);
+    ui->tblResults->setItem(rowCount,1,itemName);
+
+    QTableWidgetItem* itemSteps = new QTableWidgetItem(QString::number(steps));
+    ui->tblResults->setItem(rowCount,2,itemSteps);
+
+    QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result));
+    ui->tblResults->setItem(rowCount,3,itemResult);
+}
 
 void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
 {

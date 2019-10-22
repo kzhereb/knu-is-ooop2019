@@ -28,6 +28,7 @@ private:
 
     void addCalculators();
     void calculate(const QString& name);
+    void addResultToTable(const QString& name, int steps, double result);
 };
 
 #endif // MAINWINDOW_H
