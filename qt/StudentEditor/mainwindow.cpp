@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 
 
-
+#include <QMouseEvent>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -15,6 +15,22 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    //qDebug()<<event->isAccepted();
+    int currentRow = ui->lstStudents->currentRow();
+    qDebug()<< currentRow;
+    if (currentRow != -1) {
+        ui->lstStudents->setCurrentRow(-1);
+        ui->leName->clear();
+        ui->leAge->setText("19");
+        ui->leGroup->setText("K28");
+        ui->leCourse->setText("2");
+
+    }
+
 }
 
 void MainWindow::on_btnAdd_clicked()

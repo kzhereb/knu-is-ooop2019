@@ -23,6 +23,9 @@
       <height>471</height>
      </rect>
     </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::NoSelection</enum>
+    </property>
    </widget>
    <widget class="QGroupBox" name="grbStudentDetails">
     <property name="geometry">
@@ -143,7 +146,7 @@
       <string>Edit</string>
      </property>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>

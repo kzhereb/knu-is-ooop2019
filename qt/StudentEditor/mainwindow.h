@@ -19,6 +19,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
 private slots:
     void on_btnAdd_clicked();
 
