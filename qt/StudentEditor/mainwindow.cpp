@@ -4,12 +4,14 @@
 
 #include <QMouseEvent>
 #include <QDebug>
+#include <QAction>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    initActions();
 }
 
 MainWindow::~MainWindow()
@@ -93,4 +95,26 @@ void MainWindow::on_lstStudents_currentRowRemoved()
 {
     qDebug()<<"Current Row Removed";
     clearCurrentStudent();
+}
+
+void MainWindow::on_deleteAction_triggered(bool checked)
+{
+    qDebug()<<"Delete triggered";
+    int currentRow = ui->lstStudents->currentRow();
+    if (currentRow == -1) {
+        qDebug()<<"nothing to delete";
+        return;
+    }
+    ui->lstStudents->takeItem(currentRow);
+    clearCurrentStudent();
+    students.erase(students.begin()+currentRow);
+}
+
+
+void MainWindow::initActions()
+{
+    QAction * deleteAction = new QAction("Delete",ui->lstStudents);
+
+    connect(deleteAction,&QAction::triggered,this,&MainWindow::on_deleteAction_triggered);
+    ui->lstStudents->addAction(deleteAction);
 }

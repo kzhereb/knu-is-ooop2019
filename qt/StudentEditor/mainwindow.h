@@ -33,10 +33,13 @@ private slots:
     void on_lstStudents_clicked(const QModelIndex &index);
 
     void on_lstStudents_currentRowRemoved();
+    void on_deleteAction_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
     std::vector<Student> students;
+    void initActions();
+
     void clearCurrentStudent();
 };
 

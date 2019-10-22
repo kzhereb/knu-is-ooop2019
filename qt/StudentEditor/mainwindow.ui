@@ -23,6 +23,9 @@
       <height>471</height>
      </rect>
     </property>
+    <property name="contextMenuPolicy">
+     <enum>Qt::ActionsContextMenu</enum>
+    </property>
     <property name="selectionMode">
      <enum>QAbstractItemView::NoSelection</enum>
     </property>
@@ -196,6 +199,9 @@
    <class>CustomListWidget</class>
    <extends>QListWidget</extends>
    <header>customlistwidget.h</header>
+   <slots>
+    <signal>currentRowRemoved()</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
