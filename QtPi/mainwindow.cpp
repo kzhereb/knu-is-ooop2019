@@ -22,6 +22,8 @@ void MainWindow::on_rbAtan_clicked()
     AtanCalculator calc;
     double result = calc.calculate(1000);
     qDebug()<<"Atan "<<result;
+
+    ui->lblResult->setText(QString("Result: %1").arg(result));
 }
 
 void MainWindow::on_rbIntegrate_clicked()
@@ -29,4 +31,6 @@ void MainWindow::on_rbIntegrate_clicked()
     IntegrateCalculator calc;
     double result = calc.calculate(1000);
     qDebug()<<"Integrate "<<result;
+
+    ui->lblResult->setText(QString("Result: %1").arg(result));
 }
