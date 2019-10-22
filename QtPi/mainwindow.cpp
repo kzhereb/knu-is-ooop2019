@@ -19,8 +19,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_rbAtan_clicked()
 {
+    int steps = ui->spinSteps->value();
     AtanCalculator calc;
-    double result = calc.calculate(1000);
+    double result = calc.calculate(steps);
     qDebug()<<"Atan "<<result;
 
     ui->lblResult->setText(QString("Result: %1").arg(result));
@@ -28,8 +29,9 @@ void MainWindow::on_rbAtan_clicked()
 
 void MainWindow::on_rbIntegrate_clicked()
 {
+    int steps = ui->spinSteps->value();
     IntegrateCalculator calc;
-    double result = calc.calculate(1000);
+    double result = calc.calculate(steps);
     qDebug()<<"Integrate "<<result;
 
     ui->lblResult->setText(QString("Result: %1").arg(result));
