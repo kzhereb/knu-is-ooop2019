@@ -92,6 +92,32 @@
      <number>14</number>
     </property>
    </widget>
+   <widget class="QLabel" name="lblSteps">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>80</y>
+      <width>68</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Steps</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lblDigits">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>120</y>
+      <width>68</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Digits</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
