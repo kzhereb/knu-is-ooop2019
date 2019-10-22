@@ -116,5 +116,6 @@ void MainWindow::initActions()
     QAction * deleteAction = new QAction("Delete",ui->lstStudents);
 
     connect(deleteAction,&QAction::triggered,this,&MainWindow::on_deleteAction_triggered);
+    connect(ui->btnDelete,&QPushButton::clicked,deleteAction,&QAction::trigger);
     ui->lstStudents->addAction(deleteAction);
 }
