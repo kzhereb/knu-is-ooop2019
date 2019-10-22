@@ -3,6 +3,7 @@
 
 #include "picalculator.h"
 #include <QMainWindow>
+#include <QHash>
 #include <memory>
 
 namespace Ui {
@@ -18,14 +19,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_rbAtan_clicked();
-
-    void on_rbIntegrate_clicked();
+    void on_lswCalculators_currentTextChanged(const QString &currentText);
 
 private:
     Ui::MainWindow *ui;
 
-    void calculate( std::shared_ptr<PiCalculator> calc, QString name);
+    QHash<QString, std::shared_ptr<PiCalculator>> mapCalc;
+
+    void addCalculators();
+    void calculate(const QString& name);
 };
 
 #endif // MAINWINDOW_H

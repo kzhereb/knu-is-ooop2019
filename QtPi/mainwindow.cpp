@@ -8,14 +8,26 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    addCalculators();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::calculate(std::shared_ptr<PiCalculator> calc, QString name)
+
+void MainWindow::addCalculators()
 {
+    mapCalc["Atan"] = std::make_shared<AtanCalculator>();
+    mapCalc["Integrate"] = std::make_shared<IntegrateCalculator>();
+    foreach(const QString &key, mapCalc.keys()) {
+        ui->lswCalculators->addItem(key);
+    }
+}
+
+void MainWindow::calculate(const QString& name)
+{
+    std::shared_ptr<PiCalculator> calc = mapCalc[name];
     int steps = ui->leSteps->text().toInt();
     double result = calc->calculate(steps);
     QString textResult;
@@ -23,14 +35,8 @@ void MainWindow::calculate(std::shared_ptr<PiCalculator> calc, QString name)
     qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result);
 }
 
-void MainWindow::on_rbAtan_clicked()
-{
-    std::shared_ptr<AtanCalculator> calc = std::make_shared<AtanCalculator>();
-    calculate(calc,"Atan");
-}
 
-void MainWindow::on_rbIntegrate_clicked()
+void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
 {
-    auto calc = std::make_shared<IntegrateCalculator>();
-    calculate(calc,"Integrate");
+    calculate(currentText);
 }
