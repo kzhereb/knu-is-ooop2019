@@ -79,6 +79,19 @@
      <number>1000000000</number>
     </property>
    </widget>
+   <widget class="QSpinBox" name="spinDigits">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>120</y>
+      <width>51</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>14</number>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

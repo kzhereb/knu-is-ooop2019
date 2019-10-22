@@ -20,19 +20,21 @@ MainWindow::~MainWindow()
 void MainWindow::on_rbAtan_clicked()
 {
     int steps = ui->spinSteps->value();
+    int precision = ui->spinDigits->value();
     AtanCalculator calc;
     double result = calc.calculate(steps);
     qDebug()<<"Atan "<<result;
 
-    ui->lblResult->setText(QString("Result: %1").arg(result));
+    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
 }
 
 void MainWindow::on_rbIntegrate_clicked()
 {
     int steps = ui->spinSteps->value();
+    int precision = ui->spinDigits->value();
     IntegrateCalculator calc;
     double result = calc.calculate(steps);
     qDebug()<<"Integrate "<<result;
 
-    ui->lblResult->setText(QString("Result: %1").arg(result));
+    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
 }
