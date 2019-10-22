@@ -66,57 +66,57 @@
      <string>Result: </string>
     </property>
    </widget>
-   <widget class="QSpinBox" name="spinSteps">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>80</y>
-      <width>131</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>1000000000</number>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="spinDigits">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>120</y>
-      <width>51</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>14</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="lblSteps">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>340</x>
       <y>80</y>
-      <width>68</width>
-      <height>19</height>
+      <width>163</width>
+      <height>27</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Steps</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="lblSteps">
+       <property name="text">
+        <string>Steps</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinSteps">
+       <property name="maximum">
+        <number>1000000000</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
-   <widget class="QLabel" name="lblDigits">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>340</x>
       <y>120</y>
-      <width>68</width>
-      <height>19</height>
+      <width>93</width>
+      <height>27</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Digits</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="lblDigits">
+       <property name="text">
+        <string>Digits</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinDigits">
+       <property name="maximum">
+        <number>14</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
