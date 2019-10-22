@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "picalculator.h"
 #include <QMainWindow>
 
 namespace Ui {
@@ -22,8 +23,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    template<typename CalcT>
-    void calculate(const CalcT& calc, QString name);
+
+    void calculate(const PiCalculator* calc, QString name);
 };
 
 #endif // MAINWINDOW_H
