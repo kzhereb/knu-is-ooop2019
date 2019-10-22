@@ -27,11 +27,13 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    student.cpp
+    student.cpp \
+    customlistwidget.cpp
 
 HEADERS += \
         mainwindow.h \
-    student.h
+    student.h \
+    customlistwidget.h
 
 FORMS += \
         mainwindow.ui

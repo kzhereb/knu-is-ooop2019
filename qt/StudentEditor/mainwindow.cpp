@@ -17,17 +17,22 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::clearCurrentStudent()
+{
+    ui->lstStudents->setCurrentRow(-1);
+    ui->leName->clear();
+    ui->leAge->setText("19");
+    ui->leGroup->setText("K28");
+    ui->leCourse->setText("2");
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     //qDebug()<<event->isAccepted();
     int currentRow = ui->lstStudents->currentRow();
     qDebug()<< currentRow;
     if (currentRow != -1) {
-        ui->lstStudents->setCurrentRow(-1);
-        ui->leName->clear();
-        ui->leAge->setText("19");
-        ui->leGroup->setText("K28");
-        ui->leCourse->setText("2");
+        clearCurrentStudent();
 
     }
 
@@ -78,4 +83,14 @@ void MainWindow::on_btnEdit_clicked()
 
     ui->lstStudents->currentItem()->setText(display_name);
 
+}
+
+void MainWindow::on_lstStudents_clicked(const QModelIndex &index)
+{
+}
+
+void MainWindow::on_lstStudents_currentRowRemoved()
+{
+    qDebug()<<"Current Row Removed";
+    clearCurrentStudent();
 }

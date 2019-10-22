@@ -30,9 +30,14 @@ private slots:
 
     void on_btnEdit_clicked();
 
+    void on_lstStudents_clicked(const QModelIndex &index);
+
+    void on_lstStudents_currentRowRemoved();
+
 private:
     Ui::MainWindow *ui;
     std::vector<Student> students;
+    void clearCurrentStudent();
 };
 
 #endif // MAINWINDOW_H
