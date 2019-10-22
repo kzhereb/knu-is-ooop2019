@@ -22,6 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    template<typename CalcT>
+    void calculate(const CalcT& calc, QString name);
 };
 
 #endif // MAINWINDOW_H

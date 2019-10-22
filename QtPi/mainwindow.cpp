@@ -14,22 +14,24 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-void MainWindow::on_rbAtan_clicked()
+template<typename CalcT>
+void MainWindow::calculate(const CalcT &  calc, QString name)
 {
     int steps = ui->leSteps->text().toInt();
-    AtanCalculator calc;
     double result = calc.calculate(steps);
     QString textResult;
     ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
-    qDebug()<<QString("Atan(%1): %2").arg(steps).arg(result);
+    qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result);
+}
+
+void MainWindow::on_rbAtan_clicked()
+{
+    AtanCalculator calc;
+    calculate(calc,"Atan");
 }
 
 void MainWindow::on_rbIntegrate_clicked()
 {
-    int steps = ui->leSteps->text().toInt();
     IntegrateCalculator calc;
-    double result = calc.calculate(steps);
-    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
-    qDebug()<<QString("Integrate(%1): %2").arg(steps).arg(result);
+    calculate(calc,"Integrate");
 }
