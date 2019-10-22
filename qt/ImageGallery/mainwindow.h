@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 
+#include <QSqlDatabase>
+
 namespace Ui {
 class MainWindow;
 }
@@ -16,6 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+      void showEvent(QShowEvent *ev) override;
+
 private slots:
     void on_btnAddImage_clicked();
 
@@ -25,7 +30,14 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+
+
     void setCurrentImage(const QString& filename);
+
+    void initDb();
+    void loadFromDb();
+    void saveToDb(const QString& path);
+    void addImageToList(QString fileName);
 };
 
 #endif // MAINWINDOW_H
