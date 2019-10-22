@@ -37,6 +37,7 @@ private:
     void initDb();
     void loadFromDb();
     void saveToDb(const QString& path);
+    void saveCurrentToDb(const QString& currentPath);
     void addImageToList(QString fileName);
 };
 

@@ -28,6 +28,7 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::setCurrentImage(const QString& fileName)
 {
+    if (fileName == "") { return;}
     QPixmap pic(fileName);
     ui->lblCurrentImage->setPixmap(pic);
 }
@@ -48,14 +49,27 @@ void MainWindow::initDb()
     QSqlQuery query("CREATE TABLE images (id INTEGER PRIMARY KEY, path TEXT)");
     if(!query.isActive()) {
         qDebug() << "ERROR: " << query.lastError().text();
+        //return;
+    }
+    QSqlQuery query2("CREATE TABLE current (id INTEGER PRIMARY KEY, value TEXT)");
+    if(!query2.isActive()) {
+        qDebug() << "ERROR: " << query2.lastError().text();
         return;
     }
+    if (!query2.exec("INSERT INTO current(value) VALUES('')")) {
+        qDebug() << "ERROR insert current: " << query2.lastError().text();
+    }
+
     qDebug() << "File-based SQLite DB created (probably)";
 }
 
 void MainWindow::loadFromDb()
 {
     QSqlQuery query;
+
+
+
+
     if(!query.exec("SELECT path FROM images")) {
       qDebug() << "ERROR loading: " << query.lastError().text();
     }
@@ -68,7 +82,21 @@ void MainWindow::loadFromDb()
         qDebug()<<path;
         addImageToList(path);
 
+
     } while( query.next());
+
+    QString current("");
+    if(!query.exec("SELECT value FROM current")) {
+      qDebug() << "ERROR loading current: " << query.lastError().text();
+    } else {
+        if (query.first()) {
+            current = query.value(0).toString();
+        } else {
+            qDebug()<<"No results for current";
+        }
+    }
+    setCurrentImage(current);
+
 }
 
 void MainWindow::saveToDb(const QString& path)
@@ -80,6 +108,17 @@ void MainWindow::saveToDb(const QString& path)
       qDebug() << "ERROR saving: " << query.lastError().text();
     }
 
+}
+
+void MainWindow::saveCurrentToDb(const QString& currentPath)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE current SET value = ?");
+    query.addBindValue(currentPath);
+
+    if(!query.exec()) {
+      qDebug() << "ERROR saving current: " << query.lastError().text();
+    }
 }
 
 void MainWindow::addImageToList(QString fileName)
@@ -99,12 +138,14 @@ void MainWindow::on_btnAddImage_clicked()
     addImageToList(fileName);
 
     saveToDb(fileName);
+    saveCurrentToDb(fileName);
 }
 
 void MainWindow::on_lstImages_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     QString fileName = current->text();
     setCurrentImage(fileName);
+    saveCurrentToDb(fileName);
 
 }
 
