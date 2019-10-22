@@ -3,6 +3,7 @@
 
 #include "picalculator.h"
 #include <QMainWindow>
+#include <memory>
 
 namespace Ui {
 class MainWindow;
@@ -24,7 +25,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    void calculate(const PiCalculator* calc, QString name);
+    void calculate( std::shared_ptr<PiCalculator> calc, QString name);
 };
 
 #endif // MAINWINDOW_H

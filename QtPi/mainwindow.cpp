@@ -14,24 +14,23 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-void MainWindow::calculate(const PiCalculator* calc, QString name)
+void MainWindow::calculate(std::shared_ptr<PiCalculator> calc, QString name)
 {
     int steps = ui->leSteps->text().toInt();
     double result = calc->calculate(steps);
     QString textResult;
     ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
     qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result);
-    delete calc;
 }
 
 void MainWindow::on_rbAtan_clicked()
 {
-    AtanCalculator* calc = new AtanCalculator;
+    std::shared_ptr<AtanCalculator> calc = std::make_shared<AtanCalculator>();
     calculate(calc,"Atan");
 }
 
 void MainWindow::on_rbIntegrate_clicked()
 {
-    IntegrateCalculator* calc = new IntegrateCalculator;
+    auto calc = std::make_shared<IntegrateCalculator>();
     calculate(calc,"Integrate");
 }
