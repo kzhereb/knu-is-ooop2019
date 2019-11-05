@@ -22,6 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    template<typename CalcT>
+    void on_calculator_clicked(QString name);
 };
 
 #endif // MAINWINDOW_H

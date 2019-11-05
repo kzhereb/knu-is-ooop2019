@@ -17,24 +17,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_rbAtan_clicked()
+template<typename CalcT>
+void MainWindow::on_calculator_clicked(QString name)
 {
     int steps = ui->spinSteps->value();
     int precision = ui->spinDigits->value();
-    AtanCalculator calc;
+    CalcT calc;
     double result = calc.calculate(steps);
-    qDebug()<<"Atan "<<result;
+    qDebug()<<name<<" "<<result;
 
     ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
 }
 
+void MainWindow::on_rbAtan_clicked()
+{
+    on_calculator_clicked<AtanCalculator>("Atan");
+}
+
+
 void MainWindow::on_rbIntegrate_clicked()
 {
-    int steps = ui->spinSteps->value();
-    int precision = ui->spinDigits->value();
-    IntegrateCalculator calc;
-    double result = calc.calculate(steps);
-    qDebug()<<"Integrate "<<result;
-
-    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
+    on_calculator_clicked<IntegrateCalculator>("Integrate");
 }
