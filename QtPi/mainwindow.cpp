@@ -17,24 +17,24 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_calculator_clicked(PiCalculator* calc, QString name)
+void MainWindow::on_calculator_clicked(std::unique_ptr<PiCalculator> calc, QString name)
 {
     int steps = ui->spinSteps->value();
     int precision = ui->spinDigits->value();
     double result = calc->calculate(steps);
-    //qDebug()<<name<<" "<<result;
+    qDebug()<<name<<" "<<result;
 
     ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
-    delete calc;
+
 }
 
 void MainWindow::on_rbAtan_clicked()
 {
-    on_calculator_clicked(new AtanCalculator(), "Atan");
+    on_calculator_clicked(std::make_unique<AtanCalculator>(), "Atan");
 }
 
 
 void MainWindow::on_rbIntegrate_clicked()
 {
-    on_calculator_clicked(new IntegrateCalculator(), "Integrate");
+    on_calculator_clicked(std::make_unique<IntegrateCalculator>(), "Integrate");
 }

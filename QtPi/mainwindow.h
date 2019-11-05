@@ -5,6 +5,8 @@
 
 #include <QMainWindow>
 
+#include <memory>
+
 namespace Ui {
 class MainWindow;
 }
@@ -24,7 +26,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    void on_calculator_clicked(PiCalculator* calc, QString name);
+    void on_calculator_clicked(std::unique_ptr<PiCalculator> calc, QString name);
 };
 
 #endif // MAINWINDOW_H
