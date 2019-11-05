@@ -22,9 +22,10 @@ void MainWindow::on_calculator_clicked(PiCalculator* calc, QString name)
     int steps = ui->spinSteps->value();
     int precision = ui->spinDigits->value();
     double result = calc->calculate(steps);
-    qDebug()<<name<<" "<<result;
+    //qDebug()<<name<<" "<<result;
 
     ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
+    delete calc;
 }
 
 void MainWindow::on_rbAtan_clicked()
