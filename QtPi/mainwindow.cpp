@@ -10,6 +10,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tblResults->setColumnWidth(0,120);
+    ui->tblResults->setHorizontalHeaderLabels(QStringList{
+                                                      "Time",
+                                                      "Name",
+                                                      "Steps",
+                                                      "Result"
+                                                  });
+
 
     addCalculators();
 }
