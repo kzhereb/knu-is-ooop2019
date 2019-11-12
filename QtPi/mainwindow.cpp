@@ -76,6 +76,8 @@ void MainWindow::addResultToTable(const QString& name, int steps, double result)
     int digits = ui->spinDigits->value();
     QStandardItem* itemResult = new QStandardItem(QString::number(result,'g',digits));
     model->setItem(rowCount,3,itemResult);
+
+    ui->tblResults->setSortingEnabled(true);
 }
 
 void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
