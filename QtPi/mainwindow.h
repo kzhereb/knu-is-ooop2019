@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "picalculator.h"
+#include "models.h"
 
 #include <QMainWindow>
 #include <QHash>
@@ -29,7 +30,7 @@ private:
 
     QHash<QString, std::shared_ptr<PiCalculator>> mapCalc;
 
-    QStandardItemModel * model;
+    std::shared_ptr<Models> models;
 
     void addCalculators();
     void calculate(const QString& name);

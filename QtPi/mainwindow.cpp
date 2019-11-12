@@ -1,26 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "picalculator.h"
+
 #include <QDebug>
-#include <QDateTime>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    model(new QStandardItemModel)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    models = std::make_shared<Models>();
 
-
-    model->setColumnCount(4);
-    model->setHorizontalHeaderLabels(QStringList{
-                                                   "Time",
-                                                   "Name",
-                                                   "Steps",
-                                                   "Result"
-                                               });
-
-    ui->tblResults->setModel(model);
+    ui->tblResults->setModel(models->getModel());
     ui->tblResults->setColumnWidth(0,120);
     ui->tblResults->sortByColumn(0,Qt::SortOrder::AscendingOrder);
 
@@ -61,22 +53,9 @@ void MainWindow::calculate(const QString& name)
 
 void MainWindow::addResultToTable(const QString& name, int steps, double result)
 {
-    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-    int rowCount = model->rowCount();
-    model->setRowCount(rowCount+1);
-
-    QStandardItem* itemDT = new QStandardItem(time);
-    model->setItem(rowCount,0,itemDT);
-
-    QStandardItem* itemName = new QStandardItem(name);
-    model->setItem(rowCount,1,itemName);
-
-    QStandardItem* itemSteps = new QStandardItem(QString::number(steps));
-    model->setItem(rowCount,2,itemSteps);
-
     int digits = ui->spinDigits->value();
-    QStandardItem* itemResult = new QStandardItem(QString::number(result,'g',digits));
-    model->setItem(rowCount,3,itemResult);
+    models->addResult(name,steps,result,digits);
+
 
     ui->tblResults->setSortingEnabled(true);
 }
