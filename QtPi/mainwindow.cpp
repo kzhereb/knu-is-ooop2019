@@ -46,6 +46,8 @@ void MainWindow::calculate(const QString& name)
 
 void MainWindow::addResultToTable(const QString& name, int steps, double result)
 {
+    ui->tblResults->setSortingEnabled(false); //so that all items are added in same row
+
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     int rowCount = ui->tblResults->rowCount();
     ui->tblResults->setRowCount(rowCount+1);
@@ -62,6 +64,8 @@ void MainWindow::addResultToTable(const QString& name, int steps, double result)
     int digits = ui->spinDigits->value();
     QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result,'g',digits));
     ui->tblResults->setItem(rowCount,3,itemResult);
+
+    ui->tblResults->setSortingEnabled(true);
 }
 
 void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
