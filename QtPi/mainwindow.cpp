@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    models = std::make_shared<Models>();
+    //models = std::make_shared<StandardModels>();
+    models = std::make_shared<CustomModels>();
 
     ui->tblResults->setModel(models->getModel());
     ui->tblResults->setColumnWidth(0,120);
