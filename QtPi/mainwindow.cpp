@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     addCalculators();
+    ui->spinSteps->setFocus();
 }
 
 MainWindow::~MainWindow()
