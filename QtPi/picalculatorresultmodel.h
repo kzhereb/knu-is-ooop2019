@@ -24,11 +24,15 @@ public:
     // Add data:
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    void sort(int column, Qt::SortOrder order) override;
 public:
     void addResult(const PiCalculatorResult& result);
 
 private:
     std::vector<PiCalculatorResult> results;
+
+
+
 };
 
 #endif // PICALCULATORRESULTMODEL_H
