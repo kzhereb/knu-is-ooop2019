@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     model(new QStandardItemModel)
 {
     ui->setupUi(this);
-    ui->tblResults->setColumnWidth(0,120);
+
 
     model->setColumnCount(4);
     model->setHorizontalHeaderLabels(QStringList{
@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                                });
 
     ui->tblResults->setModel(model);
+    ui->tblResults->setColumnWidth(0,120);
 
 
     addCalculators();
