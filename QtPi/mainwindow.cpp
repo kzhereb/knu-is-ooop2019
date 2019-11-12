@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->tblResults->setColumnWidth(0,150);
+    ui->tblResults->setColumnWidth(0,120);
 
     addCalculators();
 }
@@ -46,7 +46,7 @@ void MainWindow::calculate(const QString& name)
 
 void MainWindow::addResultToTable(const QString& name, int steps, double result)
 {
-    QString time = QDateTime::currentDateTime().toString();
+    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     int rowCount = ui->tblResults->rowCount();
     ui->tblResults->setRowCount(rowCount+1);
 
