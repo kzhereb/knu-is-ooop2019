@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_calculator_clicked(std::unique_ptr<PiCalculator> calc, QString name)
+void MainWindow::on_calculator_clicked(std::shared_ptr<PiCalculator> calc, QString name)
 {
     int steps = ui->spinSteps->value();
     int precision = ui->spinDigits->value();
@@ -30,33 +30,20 @@ void MainWindow::on_calculator_clicked(std::unique_ptr<PiCalculator> calc, QStri
 
 }
 
-void MainWindow::on_rbAtan_clicked()
-{
-    on_calculator_clicked(std::make_unique<AtanCalculator>(), "Atan");
-}
 
-
-void MainWindow::on_rbIntegrate_clicked()
-{
-    on_calculator_clicked(std::make_unique<IntegrateCalculator>(), "Integrate");
-}
 
 void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
 {
-    if(currentText=="Atan") {
-        on_calculator_clicked(std::make_unique<AtanCalculator>(), "Atan");
-    } else if (currentText=="Integrate") {
-        on_calculator_clicked(std::make_unique<IntegrateCalculator>(), "Integrate");
-    } else {
-        qDebug()<<"Unknown calculator: "<<currentText;
-    }
-
+    on_calculator_clicked(mapCalc[currentText],currentText );
 }
 
 void MainWindow::addCalculators()
 {
-    ui->lswCalculators->addItem("Atan");
-    ui->lswCalculators->addItem("Integrate");
+    mapCalc["Atan"] = std::make_shared<AtanCalculator>();
+    mapCalc["Integrate"] = std::make_shared<IntegrateCalculator>();
 
+    foreach(const QString &key, mapCalc.keys()) {
+        ui->lswCalculators->addItem(key);
+    }
 
 }
