@@ -4,6 +4,7 @@
 #include "picalculator.h"
 
 #include <QDebug>
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -22,12 +23,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_calculator_clicked(std::shared_ptr<PiCalculator> calc, QString name)
 {
     int steps = ui->spinSteps->value();
-    int precision = ui->spinDigits->value();
+    int digits = ui->spinDigits->value();
     double result = calc->calculate(steps);
     qDebug()<<name<<" "<<result;
 
-    ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
-
+    //ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',precision));
+    addResultToTable(name, steps, result, digits);
 }
 
 
@@ -48,5 +49,32 @@ void MainWindow::addCalculators()
     foreach(const QString &key, mapCalc.keys()) {
         ui->lswCalculators->addItem(key);
     }
+
+}
+
+void MainWindow::addResultToTable(const QString &name, int steps, double result, int digits)
+{
+    int rows = ui->tblResults->rowCount();
+    ui->tblResults->setRowCount(rows+1);
+
+    QTableWidgetItem * itemPos = new QTableWidgetItem(QString::number(rows+1));
+    ui->tblResults->setItem(rows,0,itemPos);
+
+    QString time = QDateTime::currentDateTime().toString();
+
+    QTableWidgetItem * itemDT = new QTableWidgetItem(time);
+    ui->tblResults->setItem(rows,1,itemDT);
+
+    QTableWidgetItem* itemName = new QTableWidgetItem(name);
+    ui->tblResults->setItem(rows,2,itemName);
+
+    QTableWidgetItem* itemSteps = new QTableWidgetItem(QString::number(steps));
+    ui->tblResults->setItem(rows,3,itemSteps);
+
+    QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result,'g',digits));
+    ui->tblResults->setItem(rows,4,itemResult);
+
+    QTableWidgetItem* itemDigits = new QTableWidgetItem(QString::number(digits));
+    ui->tblResults->setItem(rows,5,itemDigits);
 
 }

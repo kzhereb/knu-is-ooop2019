@@ -30,6 +30,7 @@ private:
     QHash<QString,std::shared_ptr<PiCalculator>> mapCalc;
 
     void addCalculators();
+    void addResultToTable(const QString& name, int steps, double result, int digits);
     void on_calculator_clicked(std::shared_ptr<PiCalculator> calc, QString name);
 };
 

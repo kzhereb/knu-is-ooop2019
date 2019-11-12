@@ -14,19 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="lblResult">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>210</y>
-      <width>241</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Result: </string>
-    </property>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
@@ -97,6 +84,25 @@
       <height>391</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QTableWidget" name="tblResults">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>160</y>
+      <width>411</width>
+      <height>261</height>
+     </rect>
+    </property>
+    <property name="columnCount">
+     <number>6</number>
+    </property>
+    <column/>
+    <column/>
+    <column/>
+    <column/>
+    <column/>
+    <column/>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
