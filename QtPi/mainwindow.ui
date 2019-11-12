@@ -14,45 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGroupBox" name="grbCalculators">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>201</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Calculators</string>
-    </property>
-    <widget class="QRadioButton" name="rbAtan">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>30</y>
-       <width>109</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Atan</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="rbIntegrate">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>60</y>
-       <width>109</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Integrate</string>
-     </property>
-    </widget>
-   </widget>
    <widget class="QLabel" name="lblResult">
     <property name="geometry">
      <rect>
@@ -66,7 +27,7 @@
      <string>Result: </string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -98,7 +59,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -126,6 +87,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QListWidget" name="lswCalculators">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>256</width>
+      <height>391</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

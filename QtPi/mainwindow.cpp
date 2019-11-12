@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    addCalculators();
 }
 
 MainWindow::~MainWindow()
@@ -37,4 +39,24 @@ void MainWindow::on_rbAtan_clicked()
 void MainWindow::on_rbIntegrate_clicked()
 {
     on_calculator_clicked(std::make_unique<IntegrateCalculator>(), "Integrate");
+}
+
+void MainWindow::on_lswCalculators_currentTextChanged(const QString &currentText)
+{
+    if(currentText=="Atan") {
+        on_calculator_clicked(std::make_unique<AtanCalculator>(), "Atan");
+    } else if (currentText=="Integrate") {
+        on_calculator_clicked(std::make_unique<IntegrateCalculator>(), "Integrate");
+    } else {
+        qDebug()<<"Unknown calculator: "<<currentText;
+    }
+
+}
+
+void MainWindow::addCalculators()
+{
+    ui->lswCalculators->addItem("Atan");
+    ui->lswCalculators->addItem("Integrate");
+
+
 }

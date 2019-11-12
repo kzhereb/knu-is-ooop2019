@@ -24,8 +24,12 @@ private slots:
 
     void on_rbIntegrate_clicked();
 
+    void on_lswCalculators_currentTextChanged(const QString &currentText);
+
 private:
     Ui::MainWindow *ui;
+
+    void addCalculators();
     void on_calculator_clicked(std::unique_ptr<PiCalculator> calc, QString name);
 };
 
