@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include "picalculator.h"
+
 #include <QMainWindow>
 #include <QHash>
+#include <QStandardItemModel>
+
 #include <memory>
 
 namespace Ui {
@@ -25,6 +28,8 @@ private:
     Ui::MainWindow *ui;
 
     QHash<QString, std::shared_ptr<PiCalculator>> mapCalc;
+
+    QStandardItemModel * model;
 
     void addCalculators();
     void calculate(const QString& name);
