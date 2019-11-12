@@ -35,12 +35,13 @@ void MainWindow::addCalculators()
 void MainWindow::calculate(const QString& name)
 {
     std::shared_ptr<PiCalculator> calc = mapCalc[name];
-    int steps = ui->leSteps->text().toInt();
+    int steps = ui->spinSteps->value();
     double result = calc->calculate(steps);
     QString textResult;
     //ui->lblResult->setText(QString("Result: %1").arg(result,0,'g',14));
     addResultToTable(name, steps, result);
-    qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result);
+    int digits = ui->spinDigits->value();
+    qDebug()<<QString("%1(%2): %3").arg(name).arg(steps).arg(result,0,'g',digits);
 }
 
 void MainWindow::addResultToTable(const QString& name, int steps, double result)
@@ -58,7 +59,8 @@ void MainWindow::addResultToTable(const QString& name, int steps, double result)
     QTableWidgetItem* itemSteps = new QTableWidgetItem(QString::number(steps));
     ui->tblResults->setItem(rowCount,2,itemSteps);
 
-    QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result));
+    int digits = ui->spinDigits->value();
+    QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result,'g',digits));
     ui->tblResults->setItem(rowCount,3,itemResult);
 }
 
