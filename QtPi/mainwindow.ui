@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout" rowminimumheight="90,90,0">
+     <layout class="QGridLayout" name="gridLayout" rowminimumheight="90,90,0" columnminimumwidth="150,0">
       <item row="0" column="0" rowspan="2">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
