@@ -8,11 +8,23 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    model(new QStandardItemModel)
 {
     ui->setupUi(this);
 
     ui->tblResults->setColumnWidth(0,180);
+
+    model->setColumnCount(5);
+    model->setHorizontalHeaderLabels(QStringList{
+                                                   "Time",
+                                                   "Name",
+                                                   "Steps",
+                                                   "Result",
+                                                   "Digits"
+                                               });
+
+    ui->tblResults->setModel(model);
 
     addCalculators();
 
@@ -58,31 +70,29 @@ void MainWindow::addCalculators()
 
 void MainWindow::addResultToTable(const QString &name, int steps, double result, int digits)
 {
-    ui->tblResults->setSortingEnabled(false);
-
-    int rows = ui->tblResults->rowCount();
-    ui->tblResults->setRowCount(rows+1);
-
-//    QTableWidgetItem * itemPos = new QTableWidgetItem(QString::number(rows+1));
-//    ui->tblResults->setItem(rows,0,itemPos);
+//    ui->tblResults->setSortingEnabled(false);
 
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    int rowCount = model->rowCount();
+    model->setRowCount(rowCount+1);
 
-    QTableWidgetItem * itemDT = new QTableWidgetItem(time);
-    ui->tblResults->setItem(rows,0,itemDT);
+    QStandardItem* itemDT = new QStandardItem(time);
+    model->setItem(rowCount,0,itemDT);
 
-    QTableWidgetItem* itemName = new QTableWidgetItem(name);
-    ui->tblResults->setItem(rows,1,itemName);
+    QStandardItem* itemName = new QStandardItem(name);
+    model->setItem(rowCount,1,itemName);
 
-    QTableWidgetItem* itemSteps = new QTableWidgetItem(QString::number(steps));
-    ui->tblResults->setItem(rows,2,itemSteps);
+    QStandardItem* itemSteps = new QStandardItem(QString::number(steps));
+    model->setItem(rowCount,2,itemSteps);
 
-    QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result,'g',digits));
-    ui->tblResults->setItem(rows,3,itemResult);
 
-    QTableWidgetItem* itemDigits = new QTableWidgetItem(QString::number(digits));
-    ui->tblResults->setItem(rows,4,itemDigits);
+    QStandardItem* itemResult = new QStandardItem(QString::number(result,'g',digits));
+    model->setItem(rowCount,3,itemResult);
 
-    ui->tblResults->setSortingEnabled(true);
+    QStandardItem* itemDigits = new QStandardItem(QString::number(digits));
+    model->setItem(rowCount,4,itemDigits);
+
+
+//    ui->tblResults->setSortingEnabled(true);
 
 }

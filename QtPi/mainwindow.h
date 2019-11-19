@@ -5,6 +5,7 @@
 
 #include <QMainWindow>
 #include <QHash>
+#include <QStandardItemModel>
 
 #include <memory>
 
@@ -26,6 +27,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QStandardItemModel* model;
 
     QHash<QString,std::shared_ptr<PiCalculator>> mapCalc;
 
