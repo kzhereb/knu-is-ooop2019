@@ -94,6 +94,9 @@
       <height>261</height>
      </rect>
     </property>
+    <property name="sortingEnabled">
+     <bool>true</bool>
+    </property>
     <property name="columnCount">
      <number>5</number>
     </property>
