@@ -57,24 +57,24 @@ void MainWindow::addResultToTable(const QString &name, int steps, double result,
     int rows = ui->tblResults->rowCount();
     ui->tblResults->setRowCount(rows+1);
 
-    QTableWidgetItem * itemPos = new QTableWidgetItem(QString::number(rows+1));
-    ui->tblResults->setItem(rows,0,itemPos);
+//    QTableWidgetItem * itemPos = new QTableWidgetItem(QString::number(rows+1));
+//    ui->tblResults->setItem(rows,0,itemPos);
 
     QString time = QDateTime::currentDateTime().toString();
 
     QTableWidgetItem * itemDT = new QTableWidgetItem(time);
-    ui->tblResults->setItem(rows,1,itemDT);
+    ui->tblResults->setItem(rows,0,itemDT);
 
     QTableWidgetItem* itemName = new QTableWidgetItem(name);
-    ui->tblResults->setItem(rows,2,itemName);
+    ui->tblResults->setItem(rows,1,itemName);
 
     QTableWidgetItem* itemSteps = new QTableWidgetItem(QString::number(steps));
-    ui->tblResults->setItem(rows,3,itemSteps);
+    ui->tblResults->setItem(rows,2,itemSteps);
 
     QTableWidgetItem* itemResult = new QTableWidgetItem(QString::number(result,'g',digits));
-    ui->tblResults->setItem(rows,4,itemResult);
+    ui->tblResults->setItem(rows,3,itemResult);
 
     QTableWidgetItem* itemDigits = new QTableWidgetItem(QString::number(digits));
-    ui->tblResults->setItem(rows,5,itemDigits);
+    ui->tblResults->setItem(rows,4,itemDigits);
 
 }
