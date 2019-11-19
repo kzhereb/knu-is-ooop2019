@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->tblResults->setColumnWidth(0,180);
+
     addCalculators();
 }
 
