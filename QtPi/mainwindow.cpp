@@ -62,7 +62,7 @@ void MainWindow::addResultToTable(const QString &name, int steps, double result,
 //    QTableWidgetItem * itemPos = new QTableWidgetItem(QString::number(rows+1));
 //    ui->tblResults->setItem(rows,0,itemPos);
 
-    QString time = QDateTime::currentDateTime().toString();
+    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
     QTableWidgetItem * itemDT = new QTableWidgetItem(time);
     ui->tblResults->setItem(rows,0,itemDT);
