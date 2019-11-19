@@ -75,23 +75,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QListWidget" name="lswCalculators">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>171</width>
-      <height>111</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QTableWidget" name="tblResults">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>160</y>
+      <y>210</y>
       <width>691</width>
-      <height>261</height>
+      <height>211</height>
      </rect>
     </property>
     <property name="sortingEnabled">
@@ -125,6 +115,28 @@
       <string>Digits</string>
      </property>
     </column>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>258</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="lblCalculators">
+       <property name="text">
+        <string>Calculators</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QListWidget" name="lswCalculators"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
