@@ -56,6 +56,8 @@ void MainWindow::addCalculators()
 
 void MainWindow::addResultToTable(const QString &name, int steps, double result, int digits)
 {
+    ui->tblResults->setSortingEnabled(false);
+
     int rows = ui->tblResults->rowCount();
     ui->tblResults->setRowCount(rows+1);
 
@@ -78,5 +80,7 @@ void MainWindow::addResultToTable(const QString &name, int steps, double result,
 
     QTableWidgetItem* itemDigits = new QTableWidgetItem(QString::number(digits));
     ui->tblResults->setItem(rows,4,itemDigits);
+
+    ui->tblResults->setSortingEnabled(true);
 
 }
