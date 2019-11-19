@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tblResults->setColumnWidth(0,180);
 
     addCalculators();
+
+    ui->spinSteps->setFocus();
 }
 
 MainWindow::~MainWindow()
