@@ -2,10 +2,11 @@
 #define MAINWINDOW_H
 
 #include "picalculator.h"
+#include "models.h"
 
 #include <QMainWindow>
 #include <QHash>
-#include <QStandardItemModel>
+//#include <QStandardItemModel>
 
 #include <memory>
 
@@ -27,7 +28,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QStandardItemModel* model;
+    //QStandardItemModel* model;
+    std::shared_ptr<Models> model;
 
     QHash<QString,std::shared_ptr<PiCalculator>> mapCalc;
 
