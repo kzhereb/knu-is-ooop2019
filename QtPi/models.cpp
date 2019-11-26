@@ -2,7 +2,17 @@
 #include <QDateTime>
 #include <QStringList>
 
-Models::Models(): model(new QStandardItemModel)
+Models::Models()
+{
+
+}
+
+Models::~Models()
+{
+
+}
+
+StandardModels::StandardModels(): Models(), model(new QStandardItemModel)
 {
     model->setColumnCount(5);
     model->setHorizontalHeaderLabels(QStringList{
@@ -11,15 +21,20 @@ Models::Models(): model(new QStandardItemModel)
                                                    "Steps",
                                                    "Result",
                                                    "Digits"
-                                               });
+                                     });
 }
 
-QAbstractItemModel *Models::getModel()
+StandardModels::~StandardModels()
+{
+
+}
+
+QAbstractItemModel *StandardModels::getModel()
 {
     return model;
 }
 
-void Models::addResult(QString name, int steps, double result, int digits)
+void StandardModels::addResult(QString name, int steps, double result, int digits)
 {
     QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     int rowCount = model->rowCount();
@@ -34,7 +49,6 @@ void Models::addResult(QString name, int steps, double result, int digits)
     QStandardItem* itemSteps = new QStandardItem(QString::number(steps));
     model->setItem(rowCount,2,itemSteps);
 
-
     QStandardItem* itemResult = new QStandardItem(QString::number(result,'g',digits));
     model->setItem(rowCount,3,itemResult);
 
@@ -42,3 +56,30 @@ void Models::addResult(QString name, int steps, double result, int digits)
     model->setItem(rowCount,4,itemDigits);
 }
 
+
+
+CustomModels::CustomModels(): Models(), model(new PiCalculatorResultModel)
+{
+
+}
+
+CustomModels::~CustomModels()
+{
+
+}
+
+QAbstractItemModel *CustomModels::getModel()
+{
+    return model;
+}
+
+void CustomModels::addResult(QString name, int steps, double result, int digits)
+{
+    PiCalculatorResult res;
+    res.timestamp = QDateTime::currentDateTime();
+    res.name = name;
+    res.steps = steps;
+    res.result = result;
+    res.digits = digits;
+    model->addResult(res);
+}

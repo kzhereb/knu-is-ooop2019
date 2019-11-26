@@ -11,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    model = std::make_shared<Models>();
-
+    //model = std::make_shared<StandardModels>();
+    model = std::make_shared<CustomModels>();
 
 
     ui->tblResults->setModel(model->getModel());
