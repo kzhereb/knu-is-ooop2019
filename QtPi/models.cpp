@@ -1,4 +1,5 @@
 #include "models.h"
+#include "picalculatorresult.h"
 #include <QDateTime>
 #include <QStringList>
 
