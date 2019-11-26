@@ -27,6 +27,8 @@ public:
     bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
     //bool insertColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
 
+    void sort(int column, Qt::SortOrder order) override;
+
 public:
     void addResult(const PiCalculatorResult& result);
 
