@@ -93,6 +93,6 @@ void MainWindow::addResultToTable(const QString &name, int steps, double result,
     model->setItem(rowCount,4,itemDigits);
 
 
-//    ui->tblResults->setSortingEnabled(true);
+    ui->tblResults->setSortingEnabled(true);
 
 }
