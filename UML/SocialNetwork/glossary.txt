@@ -1,0 +1,7 @@
+Friend - another user that was added as a friend of current user
+Message - text message for a single user
+Profile - information about current user
+Profile Photo - picture of user added to profile
+
+# next iteration
+Group - 
