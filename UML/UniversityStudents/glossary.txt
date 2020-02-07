@@ -1,0 +1,13 @@
+University
+Faculty
+Institute - different name, but similar to faculty
+Department (cathedra)
+Staff - all people that work in university (including professors and administrative staff, but not including students)
+  Methodist
+Professor 
+  full
+  associate
+  assistant
+Student
+PhD student - can perform some tasks of professors (teach laboratory courses)
+Specialty  
