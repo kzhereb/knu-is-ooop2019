@@ -10,4 +10,11 @@ Professor
   assistant
 Student
 PhD student - can perform some tasks of professors (teach laboratory courses)
-Specialty  
+Specialty 
+Course - something that professors can teach, contains many lessons and assignments
+Lesson
+  Lecture
+  Labs
+  Practice
+Assignment 
+Timetable - when professors or students have their lessons each week
