@@ -1,7 +1,13 @@
 Friend - another user that was added as a friend of current user
 Message - text message for a single user
+Chat - messages between two users
 Profile - information about current user
 Profile Photo - picture of user added to profile
+Full name - complete name of user, can contain multiple components (e.g. Spanish naming custom - number of components can be unlimited)
+Nick name - short name that identifies user, should be unique within system
 
 # next iteration
 Group - 
+Photo message
+User preferences (game, film, book, ...)
+
