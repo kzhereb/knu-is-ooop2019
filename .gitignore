@@ -117,3 +117,7 @@ compile_commands.json
 # Qt Creator backups
 
 # End of https://www.gitignore.io/api/qt,qtcreator
+
+# Visual Paradigm temporary and backup files
+*.vpp.*
+
