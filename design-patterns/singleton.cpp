@@ -23,7 +23,7 @@ class Singleton
         int getValue() { return value;}
         void setValue(int val) {value= val;}
     private:
-        Singleton(int param) :value(param) {}                    // Constructor? (the {} brackets) are needed here.
+        Singleton(int param) :value{param} {}                    // Constructor? (the {} brackets) are needed here.
 
     public:
         Singleton(Singleton const&) = delete;
@@ -32,21 +32,27 @@ class Singleton
 
 TEST_CASE("can access singleton through single instance", "[patterns]") {
 	REQUIRE(Singleton::getInstance().getValue() == 5);
+	int old_value = Singleton::getInstance().getValue();
 	SECTION("can change value") {
-		int old_value = Singleton::getInstance().getValue();
+
 		Singleton::getInstance().setValue(7);
 		REQUIRE(Singleton::getInstance().getValue() == 7);
-		Singleton::getInstance().setValue(old_value); // need to return old value
 	}
 	SECTION("saving instance") {
 
 		// Singleton instance = Singleton::getInstance(); //ERROR - copy constructor unavailable
 		Singleton& instance = Singleton::getInstance();
-		int old_value = instance.getValue();
 		instance.setValue(35);
 		REQUIRE(Singleton::getInstance().getValue() == 35);
-		instance.setValue(old_value);
 	}
+
+	SECTION("comparing references to instance") {
+		Singleton& instance = Singleton::getInstance();
+		//REQUIRE(instance == Singleton::getInstance()); //ERROR - operator== not defined
+		REQUIRE(&instance == &(Singleton::getInstance()));
+	}
+	Singleton::getInstance().setValue(old_value); // need to return old value
+
 
 }
 
