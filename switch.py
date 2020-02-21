@@ -40,7 +40,10 @@ def init_rules():
                                   "\n//#define CATCH_CONFIG_MAIN"),
                       ReplaceRule("unit-testing/*.cpp",
                                   "\n//#define CATCH_CONFIG_DISABLE",
-                                  "\n#define CATCH_CONFIG_DISABLE")] 
+                                  "\n#define CATCH_CONFIG_DISABLE"),
+                      ReplaceRule("design-patterns/*.cpp",
+                                  "\n//#define CATCH_CONFIG_DISABLE",
+                                  "\n#define CATCH_CONFIG_DISABLE"),] 
     
     return rules
    
