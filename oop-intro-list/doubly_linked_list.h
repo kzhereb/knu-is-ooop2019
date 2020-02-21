@@ -42,13 +42,13 @@ public:
 
 	//-------------------------------------------------------
 	//виведення списку
-	void list_print() {
+	void list_print(std::ostream& out = std::cout) {
 		ListNode *pv = this;
 		while (pv) {
-			cout << pv->data << ' ';
+			out << pv->data << ' ';
 			pv = pv->next;
 		}
-		cout << endl;
+		out << endl;
 	}
 
 };
@@ -75,8 +75,8 @@ public:
 			delete to_delete;
 		}
 	}
-	void print() override {
-		begin->list_print();
+	void print(std::ostream& out = std::cout) override {
+		begin->list_print(out);
 	}
 
 	//--------------------------------------------------------
@@ -132,7 +132,18 @@ public:
 	}
 };
 
-
+//--------------------------------------------------------
+//пошук елемента за ключем
+template<typename T>
+ListNode<T> *find(ListNode<T> * const pbeg, T d) {
+	ListNode<T> *pv = pbeg;
+	while (pv) {
+		if (pv->data == d)
+			break;
+		pv = pv->next;
+	}
+	return pv;
+}
 
 
 

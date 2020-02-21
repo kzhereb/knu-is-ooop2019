@@ -209,7 +209,7 @@ void test_int_vector_vectors() {
 	my_list.print();
 }
 //-------------------------
-int main() {
+int main_list() {
 	using std::vector;
 	test_doubles();
 	test_int_vectors();
@@ -272,16 +272,5 @@ int main() {
 	return 0;
 }
 
-//--------------------------------------------------------
-//пошук елемента за ключем
-template<typename T>
-ListNode<T> *find(ListNode<T> * const pbeg, T d) {
-	ListNode<T> *pv = pbeg;
-	while (pv) {
-		if (pv->data == d)
-			break;
-		pv = pv->next;
-	}
-	return pv;
-}
+
 

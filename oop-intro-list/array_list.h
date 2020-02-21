@@ -45,11 +45,11 @@ public:
 	~ArrayList() {
 		delete[] items;
 	}
-	void print() override {
+	void print(std::ostream& out=std::cout) override {
 		for (int i = 0; i < size; i++) {
-			cout << items[i] << " ";
+			out << items[i] << " ";
 		}
-		cout << endl;
+		out << endl;
 	}
 
 	//--------------------------------------------------------
