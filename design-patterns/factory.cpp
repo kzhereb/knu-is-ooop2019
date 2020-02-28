@@ -6,6 +6,7 @@
  */
 //#define CATCH_CONFIG_DISABLE
 #include "../unit-testing/catch.hpp"
+#include "../oop-intro-list/list.h"
 #include "../oop-intro-list/array_list.h"
 #include "../oop-intro-list/doubly_linked_list.h"
 
@@ -14,8 +15,17 @@
 
 enum class ListType {Array, Linked};
 
+template<typename T>
+List<T>* create_list(ListType which, const T& value) {
+	if (which == ListType::Linked) {
+		return new DoublyLinkedList<T>{value};
+	} else if (which == ListType::Array) {
+		return new ArrayList<T>{value};
+	}
+}
+
 TEST_CASE("creating instances based on runtime choice","[patterns]") {
-	ListType which = ListType::Linked;
+	ListType which = ListType::Array;
 	List<int>* list=nullptr;
 	if (which == ListType::Linked) {
 		list = new DoublyLinkedList<int>{5};
@@ -25,7 +35,15 @@ TEST_CASE("creating instances based on runtime choice","[patterns]") {
 	std::stringstream out;
 	list->print(out);
 	REQUIRE(out.str() == "5 \n");
+}
 
+TEST_CASE("creating instances using factory function","[patterns]") {
+	ListType which = ListType::Array;
+	List<int>* list= create_list(which,5);
+
+	std::stringstream out;
+	list->print(out);
+	REQUIRE(out.str() == "5 \n");
 }
 
 
