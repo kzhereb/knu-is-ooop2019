@@ -71,16 +71,17 @@ public:
 		return *this;
 	}
 
-	StudentBuilder& setAll(std::unordered_map<std::string,int> const& config) {
+	StudentBuilder& setAll(std::unordered_map<std::string,int> const & config) {
 		if (config.count("IQ") > 0) {
-			student.IQ = config["IQ"];
+			student.IQ = config.at("IQ");
 		}
 		if (config.count("height") > 0) {
-			student.height = config["height"];
+			student.height = config.at("height");
 		}
 		if (config.count("weight") > 0) {
-			student.weight = config["weight"];
+			student.weight = config.at("weight");
 		}
+		return *this;
 	}
 
 	Student getResult() {
