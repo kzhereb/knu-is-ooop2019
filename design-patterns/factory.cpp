@@ -24,6 +24,35 @@ List<T>* create_list(ListType which, const T& value) {
 	}
 }
 
+class ListFactory {
+private:
+	ListType which;
+public:
+    static ListFactory& getInstance()
+    {
+        static ListFactory    instance{ListType::Array}; // Guaranteed to be destroyed.
+                              // Instantiated on first use.
+        return instance;
+    }
+    void setWhich(ListType which) {
+    	this->which = which;
+    }
+    template <typename T>
+    List<T>* createList( const T& value) {
+    	if (which == ListType::Linked) {
+    		return new DoublyLinkedList<T>{value};
+    	} else if (which == ListType::Array) {
+    		return new ArrayList<T>{value};
+    	}
+    }
+private:
+    ListFactory(ListType which):which{which} {}
+public:
+    ListFactory(ListFactory const&) = delete;
+    void operator=(ListFactory const&) = delete;
+
+};
+
 TEST_CASE("creating instances based on runtime choice","[patterns]") {
 	ListType which = ListType::Array;
 	List<int>* list=nullptr;
@@ -40,6 +69,16 @@ TEST_CASE("creating instances based on runtime choice","[patterns]") {
 TEST_CASE("creating instances using factory function","[patterns]") {
 	ListType which = ListType::Array;
 	List<int>* list= create_list(which,5);
+
+	std::stringstream out;
+	list->print(out);
+	REQUIRE(out.str() == "5 \n");
+}
+
+TEST_CASE("creating instances using factory class","[patterns]") {
+	ListType which = ListType::Linked;
+	ListFactory::getInstance().setWhich(which);
+	List<int>* list= ListFactory::getInstance().createList(5);
 
 	std::stringstream out;
 	list->print(out);
