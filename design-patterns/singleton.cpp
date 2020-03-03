@@ -5,6 +5,7 @@
  *      Author: KZ
  */
 #include <iostream>
+#include <sstream>
 
 //#define CATCH_CONFIG_DISABLE
 #include "../unit-testing/catch.hpp"
@@ -24,7 +25,7 @@ class Singleton
         void setValue(int val) {value= val;}
     private:
         Singleton(int param) :value{param} {}                    // Constructor? (the {} brackets) are needed here.
-
+        //~Singleton() {std::cout<<"singleton private destructor"<<std::endl;}  //prevent users from trying to delete instance, should not happen anyway (it is reference)
     public:
         Singleton(Singleton const&) = delete;
         void operator=(Singleton const&) = delete;
@@ -56,6 +57,35 @@ TEST_CASE("can access singleton through single instance", "[patterns]") {
 
 }
 
+TEST_CASE("can try to delete singleton, but it fails",  "[pattern]") {
+	Singleton& instance = Singleton::getInstance();
+	Singleton* ptr = &instance;
+	REQUIRE(ptr->getValue()==5);
+	delete ptr; //UNDEFINED BEHAVIOR
+	REQUIRE(Singleton::getInstance().getValue() == 5); //may work or may fail
+
+}
+
+
+struct TestPrivateDestructor {
+
+	TestPrivateDestructor(std::ostream& out=std::cout): out{out} { out<<"ctor"<<std::endl;}
+	void test_method(int value) { out<<value<<std::endl;}
+
+	~TestPrivateDestructor() {out<<"dtor"<<std::endl;} //won't compile if it is private
+private:
+	std::ostream& out;
+};
+
+TEST_CASE("private destructor when going out of scope","[oop]") {
+	std::stringstream out;
+	{
+		TestPrivateDestructor test{out};
+		test.test_method(5);
+	}
+	REQUIRE(out.str() == "ctor\n5\ndtor\n");
+
+}
 
 
 int main_1() {
