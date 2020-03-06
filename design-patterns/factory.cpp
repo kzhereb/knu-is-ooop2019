@@ -9,9 +9,12 @@
 #include "../oop-intro-list/list.h"
 #include "../oop-intro-list/array_list.h"
 #include "../oop-intro-list/doubly_linked_list.h"
+#include "../oop-intro-list/array_list_configurable.h"
 
 #include <string>
 #include <sstream>
+#include <memory>
+
 
 enum class ListType {Array, Linked};
 
@@ -24,13 +27,13 @@ List<T>* create_list(ListType which, const T& value) {
 	}
 }
 
-class ListFactory {
+class ListFactorySingleton {
 private:
 	ListType which;
 public:
-    static ListFactory& getInstance()
+    static ListFactorySingleton& getInstance()
     {
-        static ListFactory    instance{ListType::Array}; // Guaranteed to be destroyed.
+        static ListFactorySingleton    instance{ListType::Array}; // Guaranteed to be destroyed.
                               // Instantiated on first use.
         return instance;
     }
@@ -46,10 +49,56 @@ public:
     	}
     }
 private:
-    ListFactory(ListType which):which{which} {}
+    ListFactorySingleton(ListType which):which{which} {}
 public:
-    ListFactory(ListFactory const&) = delete;
-    void operator=(ListFactory const&) = delete;
+    ListFactorySingleton(ListFactorySingleton const&) = delete;
+    void operator=(ListFactorySingleton const&) = delete;
+
+};
+
+template <typename T>
+class ListFactory {
+public:
+	virtual List<T>* createList( const T& value) = 0;
+	virtual ~ListFactory() {}
+};
+
+template <typename T>
+class ArrayListFactory: public ListFactory<T> {
+public:
+	List<T>* createList( const T& value) override {
+		return new ArrayList<T>{value};
+	}
+};
+
+template <typename T>
+class DoublyLinkedListFactory: public ListFactory<T> {
+public:
+	List<T>* createList( const T& value) override {
+		return new DoublyLinkedList<T>{value};
+	}
+};
+
+template <typename T>
+class ArrayListConfigurableFactory: public ListFactory<T> {
+private:
+	GrowPolicy* grow_policy = nullptr;
+	ShrinkPolicy* shrink_policy = nullptr;
+public:
+	List<T>* createList( const T& value) override {
+		return new ArrayListConfigurable<T,
+				GrowPolicy,
+				ShrinkPolicy>{value,grow_policy,shrink_policy};
+	}
+
+	void setGrowPolicy(GrowPolicy* grow_policy) {
+		this->grow_policy = grow_policy;
+	}
+
+	void setShrinkPolicy(ShrinkPolicy* shrink_policy) {
+		this->shrink_policy = shrink_policy;
+	}
+
 
 };
 
@@ -75,10 +124,24 @@ TEST_CASE("creating instances using factory function","[patterns]") {
 	REQUIRE(out.str() == "5 \n");
 }
 
-TEST_CASE("creating instances using factory class","[patterns]") {
+TEST_CASE("creating instances using factory singleton","[patterns]") {
 	ListType which = ListType::Linked;
-	ListFactory::getInstance().setWhich(which);
-	List<int>* list= ListFactory::getInstance().createList(5);
+	ListFactorySingleton::getInstance().setWhich(which);
+	List<int>* list= ListFactorySingleton::getInstance().createList(5);
+
+	std::stringstream out;
+	list->print(out);
+	REQUIRE(out.str() == "5 \n");
+}
+
+TEST_CASE("creating instances using abstract factory","[patterns]") {
+
+	ArrayListConfigurableFactory<int> * factory_ptr = new ArrayListConfigurableFactory<int>();
+	factory_ptr->setGrowPolicy(new GrowTriplePolicy);
+	std::unique_ptr<ListFactory<int>> factory {factory_ptr};
+
+
+	List<int>* list= factory->createList(5);
 
 	std::stringstream out;
 	list->print(out);
