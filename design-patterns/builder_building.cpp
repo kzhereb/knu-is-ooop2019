@@ -69,8 +69,16 @@ TEST_CASE("build simple building", "[patterns]") {
 			.add_room({RoomType::LivingAppartment,20})
 			.add_room({RoomType::Service,3});
 	Building house = builder.construct_building();
+	double error = 1e-8;
+	REQUIRE(std::abs(house.get_total_area() - 323.0) < error);
+}
 
-	REQUIRE(house.get_total_area() == 323.0);
+TEST_CASE("comparing doubles","[cpp]") {
+	double one_third = 1/3.0;
+	double two_thirds = 1 - one_third;
+	REQUIRE((1-two_thirds)*3 != 1);
+	double error = 1e-8;
+	REQUIRE(std::abs((1-two_thirds)*3 - 1.0)<error);
 }
 
 
