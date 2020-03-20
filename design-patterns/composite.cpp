@@ -17,6 +17,9 @@ protected:
 public:
 	FileSystemObject(std::string name): name{name} {}
 	virtual std::size_t get_size() = 0;
+	virtual void add_object(std::shared_ptr<FileSystemObject> object) {
+		throw std::logic_error("Not implemented");
+	}
 	virtual ~FileSystemObject() = default;
 };
 
@@ -44,7 +47,7 @@ public:
 		return result;
 	}
 
-	void add_object(std::shared_ptr<FileSystemObject> object) {
+	void add_object(std::shared_ptr<FileSystemObject> object) override {
 		objects.push_back(object);
 	}
 
@@ -57,6 +60,9 @@ public:
 	Link(std::string name, std::shared_ptr<FileSystemObject> object) : FileSystemObject(name), object{object} {}
 	std::size_t get_size() override {
 		return object->get_size();
+	}
+	void add_object(std::shared_ptr<FileSystemObject> child_object) override {
+		object->add_object(child_object);
 	}
 };
 
@@ -86,7 +92,10 @@ TEST_CASE("working with filesystem", "[patterns]") {
 		dir->add_object(file3);
 		REQUIRE(dir->get_size()==1001238);
 		REQUIRE(dir_link->get_size()==1001238);
-
+		std::shared_ptr<File> file4 = std::make_shared<File>("some.txt",1000);
+		dir_link->add_object(file4);
+		REQUIRE(dir->get_size()==1002238);
+		REQUIRE(dir_link->get_size()==1002238);
 	}
 
 	SECTION("add itself") {
