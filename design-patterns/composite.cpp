@@ -50,6 +50,16 @@ public:
 
 };
 
+class Link: public FileSystemObject {
+private:
+	std::shared_ptr<FileSystemObject> object;
+public:
+	Link(std::string name, std::shared_ptr<FileSystemObject> object) : FileSystemObject(name), object{object} {}
+	std::size_t get_size() override {
+		return object->get_size();
+	}
+};
+
 TEST_CASE("working with filesystem", "[patterns]") {
 	std::shared_ptr<File> file = std::make_shared<File>("test.txt",1234);
 	std::shared_ptr<File> file2 = std::make_shared<File>("app.exe",1000000);
@@ -66,6 +76,16 @@ TEST_CASE("working with filesystem", "[patterns]") {
 		std::shared_ptr<File> file3 = std::make_shared<File>("test.txt",4);
 		parent_dir->add_object(file3);
 		REQUIRE(parent_dir->get_size()==1001238);
+
+	}
+
+	SECTION("working with links") {
+		std::shared_ptr<Link> dir_link = std::make_shared<Link>("dir2",dir);
+		REQUIRE(dir_link->get_size()==1001234);
+		std::shared_ptr<File> file3 = std::make_shared<File>("test.txt",4);
+		dir->add_object(file3);
+		REQUIRE(dir->get_size()==1001238);
+		REQUIRE(dir_link->get_size()==1001238);
 
 	}
 
