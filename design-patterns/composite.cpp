@@ -59,6 +59,20 @@ TEST_CASE("working with filesystem", "[patterns]") {
 	REQUIRE(file->get_size()==1234);
 	REQUIRE(dir->get_size()==1001234);
 
+	SECTION("add subdirectory") {
+		std::shared_ptr<Directory> parent_dir = std::make_shared<Directory>("parent");
+		parent_dir->add_object(dir);
+		REQUIRE(parent_dir->get_size()==1001234);
+		std::shared_ptr<File> file3 = std::make_shared<File>("test.txt",4);
+		parent_dir->add_object(file3);
+		REQUIRE(parent_dir->get_size()==1001238);
 
+	}
+
+	SECTION("add itself") {
+		//ERROR - infinite recursion
+		//dir->add_object(dir);
+		//REQUIRE(dir->get_size()==1001234);
+	}
 }
 
