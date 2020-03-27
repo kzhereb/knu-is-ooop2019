@@ -28,5 +28,5 @@ TEST_CASE("random numbers are in correct range", "[patterns]") {
 	RandomGenerator gen;
 	int random_value = gen.random_int(10,20);
 	REQUIRE(random_value>=10 );
-	REQUIRE(random_value<20 );
+	REQUIRE(random_value<=20 );
 }
