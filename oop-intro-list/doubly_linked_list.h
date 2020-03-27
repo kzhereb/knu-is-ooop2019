@@ -56,7 +56,7 @@ template<typename T>
 ListNode<T> *find(ListNode<T> * const, T);
 
 template<typename T>
-class DoublyLinkedList: public List<T> {
+class DoublyLinkedList: public AbstractList<T> {
 private:
 	ListNode<T>* begin;
 	ListNode<T>* end;

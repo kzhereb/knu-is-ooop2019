@@ -19,7 +19,7 @@
 enum class ListType {Array, Linked};
 
 template<typename T>
-List<T>* create_list(ListType which, const T& value) {
+AbstractList<T>* create_list(ListType which, const T& value) {
 	if (which == ListType::Linked) {
 		return new DoublyLinkedList<T>{value};
 	} else if (which == ListType::Array) {
@@ -41,7 +41,7 @@ public:
     	this->which = which;
     }
     template <typename T>
-    List<T>* createList( const T& value) {
+    AbstractList<T>* createList( const T& value) {
     	if (which == ListType::Linked) {
     		return new DoublyLinkedList<T>{value};
     	} else if (which == ListType::Array) {
@@ -59,14 +59,14 @@ public:
 template <typename T>
 class ListFactory {
 public:
-	virtual List<T>* createList( const T& value) = 0;
+	virtual AbstractList<T>* createList( const T& value) = 0;
 	virtual ~ListFactory() {}
 };
 
 template <typename T>
 class ArrayListFactory: public ListFactory<T> {
 public:
-	List<T>* createList( const T& value) override {
+	AbstractList<T>* createList( const T& value) override {
 		return new ArrayList<T>{value};
 	}
 };
@@ -74,7 +74,7 @@ public:
 template <typename T>
 class DoublyLinkedListFactory: public ListFactory<T> {
 public:
-	List<T>* createList( const T& value) override {
+	AbstractList<T>* createList( const T& value) override {
 		return new DoublyLinkedList<T>{value};
 	}
 };
@@ -85,7 +85,7 @@ private:
 	GrowPolicy* grow_policy = nullptr;
 	ShrinkPolicy* shrink_policy = nullptr;
 public:
-	List<T>* createList( const T& value) override {
+	AbstractList<T>* createList( const T& value) override {
 		return new ArrayListConfigurable<T,
 				GrowPolicy,
 				ShrinkPolicy>{value,grow_policy,shrink_policy};
@@ -104,7 +104,7 @@ public:
 
 TEST_CASE("creating instances based on runtime choice","[patterns]") {
 	ListType which = ListType::Array;
-	List<int>* list=nullptr;
+	AbstractList<int>* list=nullptr;
 	if (which == ListType::Linked) {
 		list = new DoublyLinkedList<int>{5};
 	} else if (which == ListType::Array) {
@@ -117,7 +117,7 @@ TEST_CASE("creating instances based on runtime choice","[patterns]") {
 
 TEST_CASE("creating instances using factory function","[patterns]") {
 	ListType which = ListType::Array;
-	List<int>* list= create_list(which,5);
+	AbstractList<int>* list= create_list(which,5);
 
 	std::stringstream out;
 	list->print(out);
@@ -127,7 +127,7 @@ TEST_CASE("creating instances using factory function","[patterns]") {
 TEST_CASE("creating instances using factory singleton","[patterns]") {
 	ListType which = ListType::Linked;
 	ListFactorySingleton::getInstance().setWhich(which);
-	List<int>* list= ListFactorySingleton::getInstance().createList(5);
+	AbstractList<int>* list= ListFactorySingleton::getInstance().createList(5);
 
 	std::stringstream out;
 	list->print(out);
@@ -141,7 +141,7 @@ TEST_CASE("creating instances using abstract factory","[patterns]") {
 	std::unique_ptr<ListFactory<int>> factory {factory_ptr};
 
 
-	List<int>* list= factory->createList(5);
+	AbstractList<int>* list= factory->createList(5);
 
 	std::stringstream out;
 	list->print(out);

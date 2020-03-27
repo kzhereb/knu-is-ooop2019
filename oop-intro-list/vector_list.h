@@ -17,7 +17,7 @@ using std::cout;
 using std::endl;
 
 template<typename T>
-class VectorList: public List<T> {
+class VectorList: public AbstractList<T> {
 private:
 	std::vector<T> impl;
 public:

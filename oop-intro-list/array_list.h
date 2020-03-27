@@ -16,7 +16,7 @@ using std::cout;
 using std::endl;
 
 template<typename T>
-class ArrayList: public List<T> {
+class ArrayList: public AbstractList<T> {
 protected:
 	int size;
 	int capacity;

@@ -14,7 +14,7 @@
 
 
 TEST_CASE("Inserting into list","[patterns]") {
-	List<int>* list = nullptr;
+	AbstractList<int>* list = nullptr;
 	SECTION("Array List") {
 		list = new ArrayList<int>{5};
 	}

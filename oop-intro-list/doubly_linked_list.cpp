@@ -31,7 +31,7 @@ double get_test_data<double>(int index) {
 }
 
 template<typename T>
-void test_list(List<T>* my_list) {
+void test_list(AbstractList<T>* my_list) {
 	cout << "Any list" << endl;
 	int nn;
 	T k, m;
@@ -163,7 +163,7 @@ int main_list() {
 
 	ArrayList<double>* list1 = new ArrayList<double>(0.1);
 	test_list(list1);
-	List<vector<int>>* list2 = new DoublyLinkedList<vector<int>>( { 1, 2 });
+	AbstractList<vector<int>>* list2 = new DoublyLinkedList<vector<int>>( { 1, 2 });
 	test_list(list2);
 
 	ArrayListConfigurable<double,GrowTriplePolicy,ShrinkQuarterPolicy>* list3 =
