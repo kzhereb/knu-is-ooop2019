@@ -82,12 +82,18 @@ public:
 		}
 		real_storage->set(index,value);
 	}
+
+	bool is_real_storage_loaded() {
+		return real_storage != nullptr;
+	}
 };
 
 TEST_CASE("working with proxy","[patterns]") {
 	{
 		ProxyStorage storage{100, "test.txt"};
+		REQUIRE(storage.is_real_storage_loaded() == false);
 		storage.set(10,123);
+		REQUIRE(storage.is_real_storage_loaded());
 		REQUIRE(storage.get(10)==123);
 	}
 	{
