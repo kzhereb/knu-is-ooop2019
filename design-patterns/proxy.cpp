@@ -50,7 +50,7 @@ public:
 	}
 	~FileStorage() {
 		save_to_file();
-		delete [] memory_array;
+		delete[] memory_array;
 	}
 	int get(std::size_t index) override {
 		assert(index < size);
@@ -68,19 +68,20 @@ private:
 	std::shared_ptr<FileStorage> real_storage;
 public:
 	ProxyStorage(std::size_t size, std::string filename) :
-				DataStorage(size, filename) { }
+			DataStorage(size, filename) {
+	}
 	int get(std::size_t index) override {
 		if (!real_storage) {
-			real_storage = std::make_shared<FileStorage>(size,filename);
+			real_storage = std::make_shared<FileStorage>(size, filename);
 		}
 		return real_storage->get(index);
 	}
 
 	void set(std::size_t index, int value) override {
 		if (!real_storage) {
-			real_storage = std::make_shared<FileStorage>(size,filename);
+			real_storage = std::make_shared<FileStorage>(size, filename);
 		}
-		real_storage->set(index,value);
+		real_storage->set(index, value);
 	}
 
 	bool is_real_storage_loaded() {
@@ -88,17 +89,48 @@ public:
 	}
 };
 
+class ProxyReloadStorage: public DataStorage {
+public:
+	ProxyReloadStorage(std::size_t size, std::string filename) :
+			DataStorage(size, filename) {
+	}
+	int get(std::size_t index) override {
+		std::shared_ptr<FileStorage> real_storage =
+				std::make_shared<FileStorage>(size, filename);
+
+		return real_storage->get(index);
+	}
+
+	void set(std::size_t index, int value) override {
+		std::shared_ptr<FileStorage> real_storage =
+				std::make_shared<FileStorage>(size, filename);
+
+		real_storage->set(index, value);
+	}
+};
+
 TEST_CASE("working with proxy","[patterns]") {
 	{
-		ProxyStorage storage{100, "test.txt"};
+		ProxyStorage storage { 100, "test.txt" };
 		REQUIRE(storage.is_real_storage_loaded() == false);
-		storage.set(10,123);
+		storage.set(10, 123);
 		REQUIRE(storage.is_real_storage_loaded());
 		REQUIRE(storage.get(10)==123);
 	}
 	{
-		ProxyStorage storage2{100, "test.txt"};
+		ProxyReloadStorage storage2 { 100, "test.txt" };
 		REQUIRE(storage2.get(10)==123);
 	}
+	{
+		ProxyReloadStorage storage { 100, "test.txt" };
+
+		storage.set(10, 456);
+		REQUIRE(storage.get(10)==456);
+	}
+	{
+		ProxyStorage storage2 { 100, "test.txt" };
+		REQUIRE(storage2.get(10)==456);
+	}
+
 }
 
