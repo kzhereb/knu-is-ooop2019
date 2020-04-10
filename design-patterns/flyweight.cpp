@@ -62,6 +62,29 @@ private:
 		return capital_found;
 	}
 
+	bool check_font_size(std::size_t i, int& font_size,
+			std::string& result) const {
+		bool font_size_found = false;
+		for (const auto& range : format_ranges) {
+			if (range.font_size != 12 && range.contains(i)) {
+				if (range.font_size == font_size) {
+					font_size_found = true;
+					continue;
+				}
+				font_size = range.font_size;
+				font_size_found = true;
+				result += "<span style='font-size:" +
+						std::to_string(font_size) +"pt;'>";
+				break;
+			}
+		}
+		if (!font_size_found && font_size != 12) {
+			font_size = 12;
+			result += "</span>";
+		}
+		return font_size_found;
+	}
+
 public:
 	FormattedText(std::string text) :
 			unformatted_text { text } {
@@ -95,10 +118,14 @@ public:
 		for (std::size_t i = 0; i < unformatted_text.length(); i++) {
 			auto symbol = unformatted_text[i];
 
-			bool capital_found = check_capital(i, is_capital, result);
+			check_capital(i, is_capital, result);
+			check_font_size(i, current_font_size,result);
 			result += symbol;
 		}
 		if (is_capital) {
+			result += "</span>";
+		}
+		if (current_font_size != 12) {
 			result += "</span>";
 		}
 		return result;
@@ -130,6 +157,13 @@ TEST_CASE("capitalizing ranges of text", "[patterns]") {
 	text.capitalize(3,8);
 	REQUIRE(text.generate_html() ==
 				"hel<span style='text-transform:uppercase;'>lo world!</span>");
+	}
+
+	SECTION("font size") {
+		text.set_font_size(2,4,20);
+		REQUIRE(text.generate_html() ==
+				"he<span style='font-size:20pt;'>ll</span>o <span style='text-transform:uppercase;'>world!</span>");
+
 	}
 
 }
