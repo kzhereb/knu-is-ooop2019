@@ -62,11 +62,39 @@ public:
 			}
 			result += symbol;
 		}
-		out<<result;
+		out << result;
 		return out;
 	}
 	std::string generate_html() const {
 		std::string result;
+		bool is_capital = false;
+		int current_font_size = 12;
+		for (std::size_t i = 0; i < unformatted_text.length(); i++) {
+			auto symbol = unformatted_text[i];
+
+			bool capital_found = false;
+			for (const auto& range : format_ranges) {
+				if (range.is_capital && range.contains(i)) {
+					if (is_capital) {
+						capital_found = true;
+						continue;
+					}
+					is_capital = true;
+					capital_found = true;
+					result += "<span style='text-transform:uppercase;'>";
+					break;
+				}
+			}
+			if (!capital_found && is_capital) {
+				is_capital = false;
+				result += "</span>";
+			}
+
+			result += symbol;
+		}
+		if (is_capital) {
+			result += "</span>";
+		}
 		return result;
 	}
 
@@ -79,6 +107,8 @@ TEST_CASE("capitalizing ranges of text", "[patterns]") {
 	std::stringstream out;
 	out << text;
 	REQUIRE(out.str() == "hello WORLD!");
+	REQUIRE(text.generate_html() ==
+			"hello <span style='text-transform:uppercase;'>world!</span>");
 
 }
 
