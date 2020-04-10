@@ -110,5 +110,21 @@ TEST_CASE("capitalizing ranges of text", "[patterns]") {
 	REQUIRE(text.generate_html() ==
 			"hello <span style='text-transform:uppercase;'>world!</span>");
 
+	text.capitalize(7,9);
+	REQUIRE(text.generate_html() ==
+				"hello <span style='text-transform:uppercase;'>world!</span>");
+
+	SECTION("two disjoint ranges") {
+	text.capitalize(2,4);
+	REQUIRE(text.generate_html() ==
+				"he<span style='text-transform:uppercase;'>ll</span>o <span style='text-transform:uppercase;'>world!</span>");
+	}
+
+	SECTION("two intersecting ranges") {
+	text.capitalize(3,8);
+	REQUIRE(text.generate_html() ==
+				"hel<span style='text-transform:uppercase;'>lo world!</span>");
+	}
+
 }
 
