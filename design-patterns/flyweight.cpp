@@ -39,6 +39,29 @@ private:
 			int font_size = 12) {
 		format_ranges.emplace_back(start, end, is_capital, font_size);
 	}
+
+	bool check_capital(std::size_t i, bool& is_capital,
+			std::string& result) const {
+		bool capital_found = false;
+		for (const auto& range : format_ranges) {
+			if (range.is_capital && range.contains(i)) {
+				if (is_capital) {
+					capital_found = true;
+					continue;
+				}
+				is_capital = true;
+				capital_found = true;
+				result += "<span style='text-transform:uppercase;'>";
+				break;
+			}
+		}
+		if (!capital_found && is_capital) {
+			is_capital = false;
+			result += "</span>";
+		}
+		return capital_found;
+	}
+
 public:
 	FormattedText(std::string text) :
 			unformatted_text { text } {
@@ -72,24 +95,7 @@ public:
 		for (std::size_t i = 0; i < unformatted_text.length(); i++) {
 			auto symbol = unformatted_text[i];
 
-			bool capital_found = false;
-			for (const auto& range : format_ranges) {
-				if (range.is_capital && range.contains(i)) {
-					if (is_capital) {
-						capital_found = true;
-						continue;
-					}
-					is_capital = true;
-					capital_found = true;
-					result += "<span style='text-transform:uppercase;'>";
-					break;
-				}
-			}
-			if (!capital_found && is_capital) {
-				is_capital = false;
-				result += "</span>";
-			}
-
+			bool capital_found = check_capital(i, is_capital, result);
 			result += symbol;
 		}
 		if (is_capital) {
