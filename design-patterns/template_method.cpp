@@ -62,6 +62,21 @@ protected:
 	}
 };
 
+class PivotStrategy {
+public:
+	virtual int get_pivot_value(int* arr, std::size_t begin, std::size_t end) = 0;
+};
+
+class PartitionStrategy {
+public:
+	virtual std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin, std::size_t end, int pivot) = 0;
+
+};
+
+class StrategyBasedQuickSort: public QuickSort {
+
+};
+
 TEST_CASE("sorting with quicksort","[patterns]") {
 	int test_array[] = {10, -1, 17, 123, 5, 7, 10, 123};
 	Sorter* sorter = nullptr;
