@@ -33,12 +33,21 @@ class Container {
 			return (current_position != other.current_position);
 		}
 	};
+public:
+	class OddTraversal {
+	private:
+		Container& container;
+	public:
+		OddTraversal(Container& container): container{container} {}
+		ContainerIterator begin() { return container.odd_begin();}
+		ContainerIterator end() { return container.end();}
+	} odd_traversal;
 
 private:
 	int* array;
 	std::size_t size;
 public:
-	Container(std::size_t size):size{size} {
+	Container(std::size_t size):size{size}, odd_traversal{*this} {
 		array = new int[size];
 		for(std::size_t i=0;i<size;i++) {
 			array[i] = i;
@@ -67,6 +76,15 @@ TEST_CASE("traversing using iterator","[patterns]") {
 		count++;
 	}
 	REQUIRE(count==5);
+
+	count = 0;
+	for(auto& item:array.odd_traversal) {
+		std::cout<<item<<std::endl;
+		REQUIRE(item==count*2+1);
+		count++;
+	}
+	REQUIRE(count==5);
+
 }
 
 
