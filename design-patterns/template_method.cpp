@@ -7,6 +7,7 @@
 #include "../unit-testing/catch.hpp"
 
 #include <utility>
+#include <memory>
 #include <iostream>
 #include <cstddef>
 
@@ -18,31 +19,36 @@ public:
 class QuickSort: public Sorter {
 public:
 	void sort(int* arr, std::size_t begin, std::size_t end) override {
-		if (end-begin<2) {return;}
-		int pivot = get_pivot_value(arr,begin,end);
-		auto limits = partition(arr,begin,end,pivot);
-		sort(arr,begin,limits.first);
-		sort(arr,limits.second,end);
+		if (end - begin < 2) {
+			return;
+		}
+		int pivot = get_pivot_value(arr, begin, end);
+		auto limits = partition(arr, begin, end, pivot);
+		sort(arr, begin, limits.first);
+		sort(arr, limits.second, end);
 	}
 protected:
-	virtual int get_pivot_value(int* arr, std::size_t begin, std::size_t end) = 0;
-	virtual std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin, std::size_t end, int pivot) = 0;
+	virtual int get_pivot_value(int* arr, std::size_t begin,
+			std::size_t end) = 0;
+	virtual std::pair<std::size_t, std::size_t> partition(int* arr,
+			std::size_t begin, std::size_t end, int pivot) = 0;
 };
 
 class LomutoQuickSort: public QuickSort {
 protected:
 	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
-		return arr[end-1];
+		return arr[end - 1];
 	}
-	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin, std::size_t end, int pivot) override {
+	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin,
+			std::size_t end, int pivot) override {
 		std::size_t i = begin;
-		for(std::size_t j=begin; j<end-1; j++) {
-			if (arr[j]<pivot) {
-				std::swap(arr[i],arr[j]);
+		for (std::size_t j = begin; j < end - 1; j++) {
+			if (arr[j] < pivot) {
+				std::swap(arr[i], arr[j]);
 				i++;
 			}
 		}
-		std::swap(arr[i], arr[end-1]);
+		std::swap(arr[i], arr[end - 1]);
 		return {i,i+1};
 	}
 
@@ -51,12 +57,13 @@ protected:
 class StdPartitionQuickSort: public QuickSort {
 protected:
 	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
-		return arr[(begin+end)/2];
+		return arr[(begin + end) / 2];
 	}
-	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin, std::size_t end, int pivot) override {
-		auto left = std::partition(arr+begin, arr+end,
+	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin,
+			std::size_t end, int pivot) override {
+		auto left = std::partition(arr + begin, arr + end,
 				[pivot](const auto& item) {return item < pivot;});
-		auto right = std::partition(arr+begin, arr+end,
+		auto right = std::partition(arr + begin, arr + end,
 				[pivot](const auto& item) {return !(pivot < item);});
 		return {std::distance(arr,left),std::distance(arr,right)};
 	}
@@ -64,21 +71,89 @@ protected:
 
 class PivotStrategy {
 public:
-	virtual int get_pivot_value(int* arr, std::size_t begin, std::size_t end) = 0;
+	virtual int get_pivot_value(int* arr, std::size_t begin,
+			std::size_t end) = 0;
 };
 
 class PartitionStrategy {
 public:
-	virtual std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin, std::size_t end, int pivot) = 0;
+	virtual std::pair<std::size_t, std::size_t> partition(int* arr,
+			std::size_t begin, std::size_t end, int pivot) = 0;
 
 };
 
+class PivotLast: public PivotStrategy {
+public:
+	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
+		return arr[end - 1];
+	}
+};
+
+class PivotFirst: public PivotStrategy {
+public:
+	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
+		return arr[begin];
+	}
+};
+
+class PivotMiddle: public PivotStrategy {
+public:
+	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
+		return arr[(begin + end) / 2];
+	}
+};
+
+class LomutoPartition: public PartitionStrategy {
+public:
+	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin,
+			std::size_t end, int pivot) override {
+		std::size_t i = begin;
+		for (std::size_t j = begin; j < end - 1; j++) {
+			if (arr[j] < pivot) {
+				std::swap(arr[i], arr[j]);
+				i++;
+			}
+		}
+		std::swap(arr[i], arr[end - 1]);
+		return {i,i+1};
+	}
+};
+
+class StdPartition: public PartitionStrategy {
+public:
+	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin,
+			std::size_t end, int pivot) override {
+		auto left = std::partition(arr + begin, arr + end,
+				[pivot](const auto& item) {return item < pivot;});
+		auto right = std::partition(arr + begin, arr + end,
+				[pivot](const auto& item) {return !(pivot < item);});
+		return {std::distance(arr,left),std::distance(arr,right)};
+	}
+};
+
 class StrategyBasedQuickSort: public QuickSort {
+private:
+	std::shared_ptr<PivotStrategy> pivot_strategy;
+	std::shared_ptr<PartitionStrategy> partition_strategy;
+public:
+	StrategyBasedQuickSort(std::shared_ptr<PivotStrategy> pivot_strategy,
+			std::shared_ptr<PartitionStrategy> partition_strategy) :
+			pivot_strategy { pivot_strategy }, partition_strategy {
+					partition_strategy } {
+	}
+protected:
+	int get_pivot_value(int* arr, std::size_t begin, std::size_t end) override {
+		return pivot_strategy->get_pivot_value(arr,begin,end);
+	}
+	std::pair<std::size_t, std::size_t> partition(int* arr, std::size_t begin,
+			std::size_t end, int pivot) override {
+		return partition_strategy->partition(arr,begin,end,pivot);
+	}
 
 };
 
 TEST_CASE("sorting with quicksort","[patterns]") {
-	int test_array[] = {10, -1, 17, 123, 5, 7, 10, 123};
+	int test_array[] = { 10, -1, 17, 123, 5, 7, 10, 123 };
 	Sorter* sorter = nullptr;
 	SECTION ("Lomuto") {
 		sorter = new LomutoQuickSort;
@@ -86,14 +161,18 @@ TEST_CASE("sorting with quicksort","[patterns]") {
 	SECTION ("std::partition") {
 		sorter = new StdPartitionQuickSort;
 	}
-
-	sorter->sort(test_array,0,8);
-
-
-	for (std::size_t i=0;i<8;i++) {
-		std::cout<<test_array[i]<<" ";
+	SECTION ("strategy based") {
+		sorter = new StrategyBasedQuickSort(
+				std::make_shared<PivotFirst>(),
+				std::make_shared<StdPartition>());
 	}
-	std::cout<<std::endl;
+
+	sorter->sort(test_array, 0, 8);
+
+	for (std::size_t i = 0; i < 8; i++) {
+		std::cout << test_array[i] << " ";
+	}
+	std::cout << std::endl;
 
 	REQUIRE(std::is_sorted(std::begin(test_array),std::end(test_array)));
 
