@@ -34,10 +34,13 @@ public:
 };
 
 class BankAccountCommand {
+protected:
+	bool execution_succeeded = false;
 public:
 	virtual ~BankAccountCommand() {
 	}
 	virtual bool execute() = 0;
+	virtual bool undo() = 0;
 };
 
 class DepositCommand: public BankAccountCommand {
@@ -49,20 +52,30 @@ public:
 			account { account }, amount { amount } {
 	}
 	bool execute() override {
-		return account.deposit(amount);
+		this->execution_succeeded = account.deposit(amount);
+		return this->execution_succeeded;
+	}
+	bool undo() override {
+		if(! this->execution_succeeded) {return false;}
+		return account.withdraw(amount);
 	}
 };
 
 class WithdrawCommand: public BankAccountCommand {
 private:
-	int amount;
 	BankAccount& account;
+	int amount;
 public:
 	WithdrawCommand(BankAccount& account, int amount) :
 			account { account }, amount { amount } {
 	}
 	bool execute() override {
-		return account.withdraw(amount);
+		this->execution_succeeded = account.withdraw(amount);
+		return this->execution_succeeded;
+	}
+	bool undo() override {
+		if(! this->execution_succeeded) {return false;}
+		return account.deposit(amount);
 	}
 };
 
@@ -78,11 +91,20 @@ TEST_CASE("working with commands", "[patterns]"){
 	REQUIRE(command1.execute());
 	REQUIRE(account.get_amount()==1200);
 
-	REQUIRE(! command2.execute() );
+	REQUIRE_FALSE( command2.execute() );
 	REQUIRE(account.get_amount()==1200);
 
 	REQUIRE(command3.execute());
 	REQUIRE(account.get_amount()==700);
+
+	REQUIRE(command3.undo());
+	REQUIRE(account.get_amount()==1200);
+
+	REQUIRE_FALSE( command2.undo());
+	REQUIRE(account.get_amount()==1200);
+
+	REQUIRE(command1.undo());
+	REQUIRE(account.get_amount()==1000);
 
 }
 
