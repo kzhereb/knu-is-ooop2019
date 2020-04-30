@@ -5,6 +5,9 @@
  *      Author: KZ
  */
 #include "../unit-testing/catch.hpp"
+#include <vector>
+#include <iostream>
+#include <memory>
 
 class BankAccount {
 private:
@@ -79,6 +82,39 @@ public:
 	}
 };
 
+class MacroCommand: public BankAccountCommand {
+private:
+	std::vector<std::shared_ptr<BankAccountCommand>> commands;
+public:
+	MacroCommand(std::initializer_list<std::shared_ptr<BankAccountCommand>> const& commands):
+		commands{commands} {}
+	bool execute() override {
+		std::size_t size = commands.size();
+		for(std::size_t i = 0; i<size;i++) {
+			if (! commands[i]->execute()) {
+				this->execution_succeeded = false;
+				for (std::size_t j=i-1; j>=0; j--) {
+					commands[j]->undo();
+					if (j==0) {break;}
+				}
+				return false;
+			}
+		}
+		this->execution_succeeded = true;
+		return true;
+	}
+
+	bool undo() override {
+		if (! this->execution_succeeded) {return false;}
+		std::size_t size = commands.size();
+		for (std::size_t i = size-1;i>=0; i--) {
+			commands[i]->undo();
+			if (i==0) {break;}
+		}
+		return true;
+	}
+};
+
 
 TEST_CASE("working with commands", "[patterns]"){
 	BankAccount account{1000,-100};
@@ -105,6 +141,33 @@ TEST_CASE("working with commands", "[patterns]"){
 
 	REQUIRE(command1.undo());
 	REQUIRE(account.get_amount()==1000);
+
+	SECTION("Macro command") {
+		MacroCommand macro{std::make_shared<DepositCommand>(account,200),
+			std::make_shared<WithdrawCommand>(account,500)};
+		REQUIRE(account.get_amount()==1000);
+
+		REQUIRE(macro.execute());
+		REQUIRE(account.get_amount()==700);
+
+		REQUIRE(macro.undo());
+		REQUIRE(account.get_amount()==1000);
+
+	}
+
+	SECTION("Macro command fails") {
+		MacroCommand macro{std::make_shared<DepositCommand>(account,200),
+			std::make_shared<WithdrawCommand>(account,2000),
+			std::make_shared<WithdrawCommand>(account,500)};
+		REQUIRE(account.get_amount()==1000);
+
+		REQUIRE_FALSE(macro.execute());
+		REQUIRE(account.get_amount()==1000);
+
+		REQUIRE_FALSE(macro.undo());
+		REQUIRE(account.get_amount()==1000);
+
+	}
 
 }
 
