@@ -118,33 +118,32 @@ public:
 
 TEST_CASE("working with commands", "[patterns]"){
 	BankAccount account{1000,-100};
-	DepositCommand command1 {account, 200};
-	WithdrawCommand command2 {account, 2000};
-	WithdrawCommand command3 {account, 500};
+	auto command1 = std::make_shared<DepositCommand>(account, 200);
+	auto command2 = std::make_shared<WithdrawCommand>(account, 2000);
+	auto command3 = std::make_shared<WithdrawCommand>(account, 500);
 
 	REQUIRE(account.get_amount()==1000);
 
-	REQUIRE(command1.execute());
+	REQUIRE(command1->execute());
 	REQUIRE(account.get_amount()==1200);
 
-	REQUIRE_FALSE( command2.execute() );
+	REQUIRE_FALSE( command2->execute() );
 	REQUIRE(account.get_amount()==1200);
 
-	REQUIRE(command3.execute());
+	REQUIRE(command3->execute());
 	REQUIRE(account.get_amount()==700);
 
-	REQUIRE(command3.undo());
+	REQUIRE(command3->undo());
 	REQUIRE(account.get_amount()==1200);
 
-	REQUIRE_FALSE( command2.undo());
+	REQUIRE_FALSE( command2->undo());
 	REQUIRE(account.get_amount()==1200);
 
-	REQUIRE(command1.undo());
+	REQUIRE(command1->undo());
 	REQUIRE(account.get_amount()==1000);
 
 	SECTION("Macro command") {
-		MacroCommand macro{std::make_shared<DepositCommand>(account,200),
-			std::make_shared<WithdrawCommand>(account,500)};
+		MacroCommand macro{command1, command3};
 		REQUIRE(account.get_amount()==1000);
 
 		REQUIRE(macro.execute());
@@ -156,9 +155,7 @@ TEST_CASE("working with commands", "[patterns]"){
 	}
 
 	SECTION("Macro command fails") {
-		MacroCommand macro{std::make_shared<DepositCommand>(account,200),
-			std::make_shared<WithdrawCommand>(account,2000),
-			std::make_shared<WithdrawCommand>(account,500)};
+		MacroCommand macro{command1,command2,command3};
 		REQUIRE(account.get_amount()==1000);
 
 		REQUIRE_FALSE(macro.execute());
