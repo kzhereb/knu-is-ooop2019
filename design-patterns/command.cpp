@@ -89,13 +89,11 @@ public:
 	MacroCommand(std::initializer_list<std::shared_ptr<BankAccountCommand>> const& commands):
 		commands{commands} {}
 	bool execute() override {
-		std::size_t size = commands.size();
-		for(std::size_t i = 0; i<size;i++) {
-			if (! commands[i]->execute()) {
+		for (auto it=commands.begin();it!=commands.end();++it) {
+			if (! (*it)->execute()) {
 				this->execution_succeeded = false;
-				for (std::size_t j=i-1; j>=0; j--) {
-					commands[j]->undo();
-					if (j==0) {break;}
+				for (std::vector<std::shared_ptr<BankAccountCommand>>::reverse_iterator it_back {it}; it_back!=commands.rend(); ++it_back) {
+					(*it_back)->undo();
 				}
 				return false;
 			}
@@ -106,10 +104,8 @@ public:
 
 	bool undo() override {
 		if (! this->execution_succeeded) {return false;}
-		std::size_t size = commands.size();
-		for (std::size_t i = size-1;i>=0; i--) {
-			commands[i]->undo();
-			if (i==0) {break;}
+		for (auto it=commands.rbegin();it!=commands.rend();++it) {
+			(*it)->undo();
 		}
 		return true;
 	}
