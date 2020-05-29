@@ -1,0 +1,111 @@
+/*
+ * create_threads.cpp
+ *
+ *  Created on: May 22, 2020
+ *      Author: KZ
+ */
+
+#define CATCH_CONFIG_ENABLE_BENCHMARKING
+#include "../unit-testing/catch.hpp"
+
+#include <thread>
+#include <mutex>
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+std::mutex g_mutex;
+
+long long sum_sequential(int* arr, std::size_t size) {
+	long long result = 0;
+	for (std::size_t i = 0; i < size; i++) {
+		result += arr[i];
+	}
+	return result;
+}
+
+void single_thread(int* arr, std::size_t start, std::size_t end, long long & result) {
+	for (std::size_t i = start; i < end; i++) {
+		std::lock_guard<std::mutex> lock(g_mutex);
+		result += arr[i];
+	}
+}
+
+long long sum_threads(int* arr, std::size_t size) {
+	long long result = 0;
+	unsigned num_threads = std::thread::hardware_concurrency();
+	std::vector<std::thread> threads(num_threads);
+	std::size_t thread_size = (size / num_threads)+1;
+	std::size_t start = 0;
+	for (unsigned i = 0; i < num_threads; i++) {
+		//std::thread worker(single_thread,arr,
+		//	start, std::min(start + thread_size, size),result);
+
+		threads.at(i)=std::thread(single_thread, arr,
+			start, std::min(start + thread_size, size), std::ref(result));
+		start += thread_size;
+	}
+	for (auto& worker : threads) {
+		worker.join();
+	}
+
+	return result;
+}
+
+int* generate_range(std::size_t size) {
+	int* result = new int[size];
+	for (std::size_t i = 0; i < size; i++) {
+		result[i] = i;
+	}
+	return result;
+}
+
+TEST_CASE("sum of array elements", "[threads]") {
+	int* test_array = new int[7]{ 1,5,10,20,100,200,4 };
+	std::size_t size = 7;
+	long long sum;
+	SECTION("sequential") {
+		sum = sum_sequential(test_array, size);
+	}
+	SECTION("threads") {
+		sum = sum_threads(test_array, size);
+	}
+
+	REQUIRE(sum == 340);
+
+	//std::cout << std::thread::hardware_concurrency() << std::endl;
+}
+
+TEST_CASE("sum of sequential numbers", "[threads]") {
+	std::size_t size = 1e4;
+	int* test_array = generate_range(size);
+	long long expected_sum = (long long)size * (size - 1) / 2;
+
+	long long sum;
+	BENCHMARK("sequential") {
+		return sum_sequential(test_array, size);
+	};
+
+	BENCHMARK("threads") {
+		return sum_threads(test_array, size);
+	};
+
+	SECTION("sequential") {
+		auto start = std::chrono::high_resolution_clock::now();
+		sum = sum_sequential(test_array, size);
+		auto end = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> diff = end - start;
+		std::cout << "sequential time: " << diff.count() << " s" << std::endl;
+	}
+	SECTION("threads") {
+		auto start = std::chrono::high_resolution_clock::now();
+		sum = sum_threads(test_array, size);
+		auto end = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> diff = end - start;
+		std::cout << "threads time: " << diff.count() << " s" << std::endl;
+	}
+
+	REQUIRE(sum == expected_sum);
+
+	//std::cout << std::thread::hardware_concurrency() << std::endl;
+}
