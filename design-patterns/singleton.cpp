@@ -61,7 +61,7 @@ TEST_CASE("can try to delete singleton, but it fails",  "[pattern]") {
 	Singleton& instance = Singleton::getInstance();
 	Singleton* ptr = &instance;
 	REQUIRE(ptr->getValue()==5);
-	delete ptr; //UNDEFINED BEHAVIOR
+	//delete ptr; //UNDEFINED BEHAVIOR
 	REQUIRE(Singleton::getInstance().getValue() == 5); //may work or may fail
 
 }
